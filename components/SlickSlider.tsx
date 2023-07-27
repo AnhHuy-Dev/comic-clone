@@ -15,7 +15,7 @@ type Props = {
 
 function PrevArrow({ className, style, onClick }: { className?: string; style?: string; onClick?: () => void }) {
 	return (
-		<div onClick={onClick} className="bg-[#10b982] w-max absolute z-30 left-4 top-[50%] -translate-y-[50%] rounded-full xl:mx-[124px]">
+		<div onClick={onClick} className="bg-[#10b982] w-max absolute z-[8] left-4 top-[50%] -translate-y-[50%] rounded-full xl:mx-[124px] cursor-pointer">
 			<MdNavigateBefore className="w-8 h-8" color="white" />
 		</div>
 	);
@@ -23,7 +23,7 @@ function PrevArrow({ className, style, onClick }: { className?: string; style?: 
 
 function NextArrow({ className, style, onClick }: { className?: string; style?: string; onClick?: () => void }) {
 	return (
-		<div onClick={onClick} className="bg-[#10b982] w-max absolute z-30 right-4 top-[50%] -translate-y-[50%] rounded-full xl:mx-[124px]">
+		<div onClick={onClick} className="bg-[#10b982] w-max absolute z-[8] right-4 top-[50%] -translate-y-[50%] rounded-full xl:mx-[124px] cursor-pointer">
 			<MdNavigateNext className="w-8 h-8" color="white" />
 		</div>
 	);
@@ -34,12 +34,12 @@ export default function SlickSlider({ children, autoplay, infinite, autoplaySpee
 		infinite: infinite || true,
 		speed: 500,
 		slidesToShow: 5,
-		slidesToScroll: 1,
+		swipeToSlide: true,
 		autoplay: autoplay || false,
 		autoplaySpeed: autoplaySpeed || 2000,
 		rows: rows || 1,
-		nextArrow: !autoplay ? <NextArrow /> : undefined,
-		prevArrow: !autoplay ? <PrevArrow /> : undefined,
+		nextArrow: !infinite ? <NextArrow /> : undefined,
+		prevArrow: !infinite ? <PrevArrow /> : undefined,
 		responsive: [
 			{
 				breakpoint: 1025,

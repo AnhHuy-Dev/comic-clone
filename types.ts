@@ -19,3 +19,9 @@ export interface Comic {
 	updated_at: string;
 	authors: string | string[];
 }
+
+export interface Genres {
+	id: string;
+	name: string;
+	description: string;
+}

@@ -9,7 +9,8 @@
 	}
 }
 
-.swiper-slide {
+.swiper-slide,
+.swiper-genres {
 	display: block;
 	flex-shrink: 0;
 	height: 100%;
@@ -18,7 +19,11 @@
 	width: 100%;
 }
 
-/* .slick-slider {
+.swiper-genres {
+	width: max-content !important;
+}
+
+.slick-slider {
 	position: relative;
 	height: 100%;
 	display: flex;
@@ -32,7 +37,7 @@
 	display: block !important;
 	overflow: hidden;
 	width: 100%;
-} */
+}
 
 .slick-arrow {
 	margin: 0 24px;
@@ -42,4 +47,50 @@
 
 .slick-arrow::before {
 	display: none;
+}
+
+.scrollbar::-webkit-scrollbar {
+	display: none;
+}
+
+.MuiPagination-ul li button {
+	font-size: 18px;
+}
+
+.MuiPagination-ul {
+	display: flex;
+	justify-content: center;
+}
+
+.MuiPagination-ul li button {
+	font-size: 16px;
+}
+
+.MuiPagination-ul li button svg {
+	width: 24px;
+	height: 24px;
+}
+
+@media only screen and (max-width: 739px) {
+	.MuiPagination-ul li {
+		/* padding: 0 1px; */
+	}
+}
+
+@media (min-width: 768px) {
+	.MuiPagination-ul li button {
+		font-size: 20px;
+	}
+	.MuiPagination-ul li button svg {
+		width: 24px;
+		height: 24px;
+	}
+	.MuiPagination-ul li {
+		padding: 0 10px;
+	}
+}
+
+.css-yuzg60-MuiButtonBase-root-MuiPaginationItem-root.Mui-selected {
+	color: #fff;
+	background-color: #10b982 !important;
 }

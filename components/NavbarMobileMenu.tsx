@@ -30,7 +30,7 @@ function NavbarMobileMenu({ className, setShowMobile }: Props) {
 					<AiOutlineHome className="w-6 h-6" />
 					<span>Home</span>
 				</Link>
-				<Link href="/genres" className={twMerge(`flex gap-x-3 items-center text-lg`, pathname == "/genres" && "text-[#10b981]")}>
+				<Link href="/genres?type=all" className={twMerge(`flex gap-x-3 items-center text-lg`, pathname == "/genres" && "text-[#10b981]")}>
 					<GenresIcon />
 					<span>Genres</span>
 				</Link>

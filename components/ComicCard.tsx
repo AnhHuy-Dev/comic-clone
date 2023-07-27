@@ -8,16 +8,16 @@ type Props = {
 	trending?: boolean;
 };
 
-function ComicCard({ comic, trending }: Props) {
+function ComicCard({ comic, trending = false }: Props) {
 	return (
 		<div className="swiper-slide w-[242px] px-1 py-1" data-swiper-slide-index="4">
 			<div className="overflow-hidden rounded-md duration-500 border-2 border-transparent md:hover:border-emerald-300 relative group md:group-hover:shadow-md cursor-pointer">
-				<div className="flex gap-1 absolute font-semibold top-0 z-10 text-xs text-white">
+				<div className="flex gap-1 absolute font-semibold top-0 text-xs z-[8] text-white">
 					{comic.updated_at?.includes("trước") && Number(comic.updated_at.match(/\d+/)?.[0]) <= 3 && (
 						<span className="bg-amber-400 py-0.5 px-2 rounded-b-sm first:rounded-bl-none"> Up </span>
 					)}
 					{comic.is_trending && <span className="bg-[#F43F5E] py-0.5 px-2 rounded-b-sm first:rounded-bl-none"> Hot </span>}
-					{comic.status === "Completed" && <span className="bg-sky-500 py-0.5 px-2 rounded-b-sm first:rounded-bl-none"> Up </span>}
+					{comic.status === "Completed" && <span className="bg-sky-500 py-0.5 px-2 rounded-b-sm first:rounded-bl-none"> End </span>}
 				</div>
 				<div className="relative">
 					<img
@@ -28,7 +28,7 @@ function ComicCard({ comic, trending }: Props) {
 					/>
 				</div>
 				<div className="absolute top-1/2 bottom-0 inset-x-0 flex flex-col justify-end px-2 sm:px-4 py-2 bg-gradient-to-b from-transparent to-black">
-					<h5 className="font-bold leading-5 text-lg text-white group-hover:text-emerald-400 text-shadow duration-200 line-clamp-2">
+					<h5 className="font-bold leading-5 text-lg text-white group-hover:text-emerald-400 duration-200 line-clamp-2">
 						<abbr title={comic?.title} className="no-underline">
 							{comic?.title}
 						</abbr>

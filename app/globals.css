@@ -94,3 +94,29 @@
 	color: #fff;
 	background-color: #10b982 !important;
 }
+
+.search-menu::-webkit-scrollbar {
+	width: 4px;
+	height: 8px;
+	background-color: red;
+}
+
+/* Track */
+.search-menu::-webkit-scrollbar-track {
+	background: #f1f1f1;
+}
+
+/* Handle */
+.search-menu::-webkit-scrollbar-thumb {
+	background: #888;
+	border-radius: 100rem;
+}
+
+/* Handle on hover */
+.search-menu::-webkit-scrollbar-thumb:hover {
+	background: #555;
+}
+
+.search-input:not(:focus-within) ~ .search-menu {
+	display: none;
+}

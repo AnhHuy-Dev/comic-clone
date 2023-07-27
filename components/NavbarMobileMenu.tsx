@@ -24,7 +24,7 @@ function NavbarMobileMenu({ className, setShowMobile }: Props) {
 			<div className="flex justify-end" onClick={() => setShowMobile(false)}>
 				<RiCloseFill className="w-8 h-8" strokeWidth={2} />
 			</div>
-			<SearchInput />
+			<SearchInput setShow={setShowMobile} />
 			<div className="mt-4 flex flex-col gap-y-3">
 				<Link href="/" className={twMerge(`flex gap-x-3 items-center text-lg`, pathname == "/" && "text-[#10b981]")}>
 					<AiOutlineHome className="w-6 h-6" />

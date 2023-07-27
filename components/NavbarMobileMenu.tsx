@@ -38,7 +38,7 @@ function NavbarMobileMenu({ className, setShowMobile }: Props) {
 					<TopIcon />
 					<span>Top</span>
 				</Link>
-				<Link href="/news" className={twMerge(`flex gap-x-3 items-center text-lg`, pathname == "/news" && "text-[#10b981]")}>
+				<Link href="/new" className={twMerge(`flex gap-x-3 items-center text-lg`, pathname == "/new" && "text-[#10b981]")}>
 					<NewComicIcon />
 					<span>News Comics</span>
 				</Link>

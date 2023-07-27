@@ -12,7 +12,7 @@ function Navbar() {
 	const pathName = usePathname();
 
 	return (
-		<div className="px-3 mt-2 xl:px-[124px] xl:py-2 flex justify-between items-center border-b-2">
+		<div className="px-3 mt-2 xl:px-[124px] lg:py-2 flex justify-between items-center border-b-2">
 			<div className="flex justify-between lg:justify-start items-center w-full">
 				<Link href="/" className="flex items-center gap-x-2 cursor-pointer">
 					<img src="./images/logo.png" alt="" className="w-full h-[40px]" />
@@ -37,10 +37,10 @@ function Navbar() {
 						className={twMerge(`font-semibold px-4 py-2 rounded-full text-lg hover:text-emerald-500`, pathName == "/genres" && `bg-[#10b982] text-white hover:text-white`)}>
 						Genres
 					</Link>
-					<Link href="/news" className={twMerge(`font-semibold px-4 py-2 rounded-full text-lg hover:text-emerald-500`, pathName == "/news" && `bg-[#10b982] text-white hover:text-white`)}>
+					<Link href="/new" className={twMerge(`font-semibold px-4 py-2 rounded-full text-lg hover:text-emerald-500`, pathName == "/new" && `bg-[#10b982] text-white hover:text-white`)}>
 						New
 					</Link>
-					<Link href="/" className={twMerge(`font-semibold px-4 py-2 rounded-full text-lg hover:text-emerald-500`, pathName == "/top" && `bg-[#10b982] text-white hover:text-white`)}>
+					<Link href="/top" className={twMerge(`font-semibold px-4 py-2 rounded-full text-lg hover:text-emerald-500`, pathName == "/top" && `bg-[#10b982] text-white hover:text-white`)}>
 						Top
 					</Link>
 				</div>

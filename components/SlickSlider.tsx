@@ -59,6 +59,12 @@ export default function SlickSlider({ children, autoplay, infinite, autoplaySpee
 					slidesToShow: 2,
 				},
 			},
+			{
+				breakpoint: 350,
+				settings: {
+					slidesToShow: 1,
+				},
+			},
 		],
 	};
 	return (

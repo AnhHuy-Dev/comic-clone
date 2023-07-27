@@ -44,7 +44,7 @@ function GenresContent({ genres }: { genres: Genres[] }) {
 	};
 
 	return (
-		<div className="flex w-full overflow-auto scrollbar px-3 flex-col xl:px-[124px] xl:py-2">
+		<div className="flex w-full overflow-auto scrollbar px-3 flex-col xl:px-[124px] lg:py-2">
 			<Slider
 				infinite={true}
 				initialSlide={indexCurrent}

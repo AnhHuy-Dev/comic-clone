@@ -1,4 +1,7 @@
-export interface Genres {}
+export interface Chapter {
+	id: number;
+	name: string;
+}
 
 export interface Comic {
 	id: string;
@@ -22,10 +25,7 @@ export interface Comic {
 
 export type ComicDetail = {
 	average: number;
-	chapters: {
-		id: number;
-		name: string;
-	}[];
+	chapters: Chapter[];
 	description: string;
 	followers: number;
 	genres: {
@@ -43,6 +43,25 @@ export type ComicDetail = {
 	authors: string | string[];
 };
 
+export type Reply = {
+	avatar: string;
+	content: string;
+	created_at: string;
+	username: string;
+	stickers: string[];
+	vote_count: number;
+	mention_user: string;
+};
+
+export interface Comment {
+	avatar: string;
+	content: string;
+	created_at: string;
+	replies: Reply[];
+	stickers: string[];
+	username: string;
+	vote_count: number;
+}
 export interface Genres {
 	id: string;
 	name: string;

@@ -1,8 +1,10 @@
 import GenresContent from "@/components/GenresContent";
 import Navbar from "@/components/Navbar";
+import ScrollToTop from "@/components/ScrollToTop";
 import { GenresIcon } from "@/icon";
 import { Genres } from "@/types";
 import { Comics } from "comics-api";
+
 async function Genres() {
 	const genresComic: Genres[] = await Comics.getGenres();
 
@@ -14,6 +16,7 @@ async function Genres() {
 				Genres
 			</div>
 			<GenresContent genres={genresComic} />
+			<ScrollToTop />
 		</>
 	);
 }

@@ -7,8 +7,6 @@ import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { HiMagnifyingGlass } from "react-icons/hi2";
 import { twMerge } from "tailwind-merge";
 import MediaComic from "./MediaComic";
-import qs from "query-string";
-import { getURL } from "next/dist/shared/lib/utils";
 import { useRouter } from "next/navigation";
 
 type Props = {
@@ -20,7 +18,6 @@ function SearchInput({ className, setShow }: Props) {
 	const [value, setValue] = useState<string>("");
 	const [searchComics, setSearchComics] = useState<Comic[]>([]);
 	const debounceValue = useDebounce(value, 500);
-	const url = getURL();
 	const router = useRouter();
 
 	useEffect(() => {

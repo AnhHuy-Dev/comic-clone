@@ -1,6 +1,6 @@
 "use client";
 import { ChapterIcon, FollowIcon, TopDailyIcon, TopMonthlyIcon, TopWeeklyIcon } from "@/icon";
-import { useRouter, useSearchParams } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { IoMdSnow } from "react-icons/io";
 import { twMerge } from "tailwind-merge";
 import { BiComment } from "react-icons/bi";
@@ -11,7 +11,6 @@ import ComicCard from "./ComicCard";
 import PaginationComic from "./PaginationComic";
 import Footer from "./Footer";
 import { ClipLoader } from "react-spinners";
-import { getURL } from "next/dist/shared/lib/utils";
 import qs from "query-string";
 
 type Props = {
@@ -38,7 +37,7 @@ function TopContent() {
 		});
 	}, [tab, statusCurrent, pageCurrent]);
 
-	const url = getURL();
+	const url = usePathname();
 
 	const handleChangeType = (type: string) => {
 		const newUrl = qs.stringifyUrl({

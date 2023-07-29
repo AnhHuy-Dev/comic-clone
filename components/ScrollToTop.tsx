@@ -6,7 +6,10 @@ function ScrollToTop() {
 	const [scrollPositon, setScrollPostion] = useState(0);
 
 	const changePositon = () => {
-		setScrollPostion(window.pageYOffset);
+		if (typeof window !== "undefined") {
+			// Client-side-only code
+			setScrollPostion(window.pageYOffset);
+		}
 	};
 
 	const handleScrollToTop = () => {

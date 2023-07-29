@@ -4,6 +4,7 @@ import getComicComment from "@/actions/getComicComment";
 import getDetailComic from "@/actions/getDetailComic";
 import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
+import ScrollToTop from "@/components/ScrollToTop";
 import { Chapter, ComicDetail } from "@/types";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -24,6 +25,7 @@ function ComicPage({ params }: { params: any }) {
 			<Navbar />
 			<ComicPageContent comic={comic!} chapters={chapters} id={id} />
 			<Footer />
+			<ScrollToTop />
 		</>
 	);
 }

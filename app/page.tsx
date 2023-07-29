@@ -18,19 +18,19 @@ export default async function Home() {
 		<>
 			<Navbar />
 			<ComicContent comics={trendingComics} trending={true} />
-			<ComicContent comics={popularComics.comics} title="Popular Comics">
+			<ComicContent comics={popularComics.comics} title="popular">
 				<BsFire className="w-6 h-6 lg:w-8 lg:h-8" color="#10b982" />
 			</ComicContent>
-			<ComicContent comics={completedComics.comics} title="Completed Comics">
+			<ComicContent comics={completedComics.comics} title="completed">
 				<BsFillPatchCheckFill className="w-6 h-6 lg:w-8 lg:h-8" color="#10b982" />
 			</ComicContent>
-			<ComicContent comics={recentlyComics.comics} title="Recently Update">
+			<ComicContent comics={recentlyComics.comics} title="recently">
 				<BiTimeFive className="w-8 h-8 lg:w-10 lg:h-10" color="#10b982" />
 			</ComicContent>
-			<ComicContent comics={boyComics.comics} title="Boy Comics">
+			<ComicContent comics={boyComics.comics} title="boy">
 				<BoyIcon className="w-8 h-8 lg:w-8 lg:h-8 text-[#10b982]" />
 			</ComicContent>
-			<ComicContent comics={girlComics.comics} title="Girl Comics">
+			<ComicContent comics={girlComics.comics} title="girl">
 				<GirlIcon className="w-8 h-8 lg:w-8 lg:h-8 text-[#10b982]" />
 			</ComicContent>
 			<Footer />

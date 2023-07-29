@@ -1,5 +1,6 @@
+"use client";
+
 import { Chapter, ComicDetail, Genres } from "@/types";
-import Link from "next/link";
 import { useState } from "react";
 import { AiFillEye, AiFillHeart, AiFillStar, AiOutlineDownload } from "react-icons/ai";
 import { PiSpinnerBold } from "react-icons/pi";
@@ -10,11 +11,17 @@ import ChapterPage from "./ChapterPage";
 import { HiOutlineBookOpen } from "react-icons/hi";
 import { CommentIcon } from "@/icon";
 import CommentPage from "@/components/CommentPage";
+import { usePathname, useRouter } from "next/navigation";
 
 function ComicPageContent({ comic, chapters, id }: { comic: ComicDetail; chapters: Chapter[]; id: string }) {
 	const [showMore, setShowMore] = useState(false);
 	const [type, setType] = useState("chapter");
+	const router = useRouter();
+	const url = usePathname();
 
+	const handleReadNow = () => {
+		router.push(`${url}/${chapters[0].id}`);
+	};
 	return (
 		<div className="relative pt-12 px-4 min-h-screen">
 			<div className="absolute top-0 inset-x-0 h-80 bg-gradient-to-b from-emerald-100 -z-10"></div>
@@ -65,7 +72,7 @@ function ComicPageContent({ comic, chapters, id }: { comic: ComicDetail; chapter
 								{showMore ? "Show less" : "Show more"}
 							</p>
 							<div className="pb-6 flex flex-col items-center gap-y-3 mt-4 sm:flex-row sm:gap-x-3">
-								<button className="flex text-white bg-emerald-500 px-5 py-[10px] rounded-md gap-x-2 font-bold text-lg items-center cursor-pointer">
+								<button className="flex text-white bg-emerald-500 px-5 py-[10px] rounded-md gap-x-2 font-bold text-lg items-center cursor-pointer" onClick={handleReadNow}>
 									<SlBookOpen className="w-6 h-6" />
 									<span>Read Now</span>
 								</button>

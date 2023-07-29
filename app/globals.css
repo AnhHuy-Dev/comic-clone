@@ -98,7 +98,6 @@
 .search-menu::-webkit-scrollbar {
 	width: 4px;
 	height: 8px;
-	background-color: red;
 }
 
 /* Track */
@@ -119,4 +118,14 @@
 
 .search-input:not(:focus-within) ~ .search-menu {
 	display: none;
+}
+
+.episode-scroll::-webkit-scrollbar {
+	width: 4px;
+	height: 8px;
+}
+
+.episode-scroll::-webkit-scrollbar-thumb {
+	background: #888;
+	border-radius: 100rem;
 }

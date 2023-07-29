@@ -34,9 +34,9 @@ function ComicContent({ comics, title, children, trending = false }: Props) {
 				<div className="flex justify-between px-2 py-4 xl:px-[124px] xl:py-2">
 					<div className="flex items-center gap-x-4">
 						{children}
-						<h1 className="text-black text-xl font-bold lg:text-3xl">{title}</h1>
+						<h1 className="text-black text-xl font-bold lg:text-3xl">{title!?.charAt(0).toUpperCase() + title?.slice(1)} Comics</h1>
 					</div>
-					<Link href="/">
+					<Link href={`/${title}`}>
 						<button className="border-[#10b982] border-2 text-[#10b982] px-3 rounded-full py-1 text-sm md:text-lg hover:bg-[#10b982] hover:text-white hover:ring-2 hover:ring-offset-2 duration-200 transition">
 							More
 						</button>

@@ -1,12 +1,11 @@
 "use client";
 import Pagination from "@mui/material/Pagination";
-import { getURL } from "next/dist/shared/lib/utils";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import qs from "query-string";
 
 export default function PaginationComic({ countPage, defaultPage }: { countPage: number; defaultPage: number }) {
 	const router = useRouter();
-	const url = getURL();
+	const url = usePathname();
 
 	const handlePagination = (page: number) => {
 		const newUrl = qs.stringifyUrl({

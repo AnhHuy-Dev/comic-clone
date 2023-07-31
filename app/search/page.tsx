@@ -1,4 +1,5 @@
 import Navbar from "@/components/Navbar";
+import ScrollToTop from "@/components/ScrollToTop";
 import SearchContent from "@/components/SearchContent";
 
 function Search() {
@@ -6,6 +7,7 @@ function Search() {
 		<>
 			<Navbar />
 			<SearchContent />
+			<ScrollToTop />
 		</>
 	);
 }

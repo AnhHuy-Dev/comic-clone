@@ -32,7 +32,7 @@ function ChapterPage({ chapters }: { chapters: Chapter[] }) {
 			<ul className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-4">
 				{chapters?.slice(currentChap * 50, (currentChap + 1) * 50).map((item) => {
 					return (
-						<li onClick={() => handleReadChap(item.id)} key={item.id} className="border rounded px-3 py-2 truncate hover:bg-emerald-50 duration-100">
+						<li onClick={() => handleReadChap(item.id)} key={item.id} className="border rounded px-3 py-2 truncate hover:bg-emerald-50 duration-100 cursor-pointer">
 							{item.name}
 						</li>
 					);

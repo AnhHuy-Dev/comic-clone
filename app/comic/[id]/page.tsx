@@ -1,12 +1,10 @@
 "use client";
 import getAllChapter from "@/actions/getAllChapter";
-import getComicComment from "@/actions/getComicComment";
 import getDetailComic from "@/actions/getDetailComic";
 import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
 import ScrollToTop from "@/components/ScrollToTop";
 import { Chapter, ComicDetail } from "@/types";
-import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import ComicPageContent from "./components/ComicPageContent";
 

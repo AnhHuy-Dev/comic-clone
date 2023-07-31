@@ -100,7 +100,7 @@ function GenresContent({ genres }: { genres: Genres[] }) {
 							return <ComicCard key={item.id} comic={item} />;
 						})}
 					</div>
-					<PaginationComic countPage={content.totalPage!} defaultPage={Number(pageCurrent)} />
+					<PaginationComic countPage={content.totalPage!} defaultPage={Number(pageCurrent)} type={type!} />
 					<Footer />
 				</>
 			) : (

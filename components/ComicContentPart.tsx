@@ -82,7 +82,7 @@ function ComicContentPart({ title, type, children }: { title: string; type: stri
 	}, [pageCurrent]);
 
 	return (
-		<div className="px-3 xl:px-[124px] lg:py-2">
+		<div className="px-3 xl:px-[220px] lg:py-2">
 			<div className="flex items-center mt-12 mb-4 gap-x-3">
 				{children}
 				<span className="font-semibold text-xl">

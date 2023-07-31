@@ -8,7 +8,7 @@ type Props = {
 	current_page: number | undefined;
 };
 
-export default async function getCompletedComics(page: number): Promise<Props> {
+export default async function getCompletedComics(page?: number): Promise<Props> {
 	const data = await Comics.getCompletedComics(page).then((data) => {
 		return data;
 	});

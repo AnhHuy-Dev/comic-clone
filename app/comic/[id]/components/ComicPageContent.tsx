@@ -12,16 +12,24 @@ import { HiOutlineBookOpen } from "react-icons/hi";
 import { CommentIcon } from "@/icon";
 import CommentPage from "@/components/CommentPage";
 import { usePathname, useRouter } from "next/navigation";
+import { useStoreProivider } from "@/context/StoreProvider";
 
 function ComicPageContent({ comic, chapters, id }: { comic: ComicDetail; chapters: Chapter[]; id: string }) {
 	const [showMore, setShowMore] = useState(false);
 	const [type, setType] = useState("chapter");
 	const router = useRouter();
 	const url = usePathname();
+	const { comicItems } = useStoreProivider();
 
 	const handleReadNow = () => {
-		router.push(`${url}/${chapters[0].id}`);
+		const index = comicItems.findIndex((item) => item.id === id);
+		if (index !== -1) {
+			router.push(`${url}/${comicItems[index].chapter_id}`);
+		} else {
+			router.push(`${url}/${chapters[0].id}`);
+		}
 	};
+
 	return (
 		<div className="relative pt-12 px-4 min-h-screen">
 			<div className="absolute top-0 inset-x-0 h-80 bg-gradient-to-b from-emerald-100 -z-10"></div>
@@ -30,13 +38,21 @@ function ComicPageContent({ comic, chapters, id }: { comic: ComicDetail; chapter
 					<div className="max-w-5xl mx-auto border-4 border-transparent p-0 rounded-xl sm:grid sm:grid-cols-4 gap-6 md:p-4 md:border-white">
 						<div className="aspect-[2/3] w-56 mx-auto sm:w-full rounded-lg border-2 overflow-hidden border-emerald-500 relative sm:col-span-1">
 							<img src={comic?.thumbnail} alt="" className="w-full h-full" />
+							<div className="flex gap-1 absolute font-bold top-0 inset-x-0 z-10 text-xs text-white">
+								{comic.status === "Finished" && <span className="bg-sky-500 py-0.5 px-2 rounded-b-sm first:rounded-bl-none">End</span>}
+
+								{comic.is_adult && <span className="bg-rose-500 py-0.5 px-2 rounded-b-sm first:rounded-bl-none">18+</span>}
+							</div>
 						</div>
 						<div className="flex flex-col gap-y-3 sm:col-span-3 md:gap-y-1">
 							<h3 className="text-2xl font-bold mt-4">{comic?.title}</h3>
 							<ul className="flex gap-x-3 flex-wrap gap-y-3">
 								{comic?.genres.map((item) => {
 									return (
-										<li key={item.id} className="border-2 border-emerald-500 rounded-md px-2 hover:bg-emerald-500 text-sm font-semibold transition-all duration-200 cursor-pointer">
+										<li
+											onClick={() => router.push(`/genres?type=${item.id}`)}
+											key={item.id}
+											className="border-2 border-emerald-500 rounded-md px-2 hover:bg-emerald-500 text-sm font-semibold transition-all duration-200 cursor-pointer">
 											{item.name}
 										</li>
 									);
@@ -50,7 +66,7 @@ function ComicPageContent({ comic, chapters, id }: { comic: ComicDetail; chapter
 										Updating
 									</div>
 								) : (
-									comic?.authors
+									<span className="text-fuchsia-500">{comic?.authors}</span>
 								)}
 							</div>
 							<div className="flex gap-x-3">

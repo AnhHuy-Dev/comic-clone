@@ -8,7 +8,7 @@ type Props = {
 	current_page: number | undefined;
 };
 
-export default async function getRecentlyComics(page: number): Promise<Props> {
+export default async function getRecentlyComics(page?: number): Promise<Props> {
 	const data = await Comics.getRecentUpdateComics(page).then((data) => {
 		return data;
 	});

@@ -46,12 +46,12 @@ function Navbar() {
 				</div>
 			</div>
 			<div className="items-center gap-x-4 hidden lg:flex">
-				<Link href="history">
+				<Link href="/history">
 					<MdHistory className="text-blue-500 w-8 h-8" />
 				</Link>
 				<SearchInput />
 			</div>
-			{showMobile && <div className="fixed right-0 top-0 bottom-0 bg-black/50 w-full z-10" onClick={() => setShowMobile(false)}></div>}
+			{showMobile && <div className="fixed right-0 top-0 bottom-0 bg-black/50 w-full z-30" onClick={() => setShowMobile(false)}></div>}
 			<NavbarMobileMenu className={showMobile ? "translate-x-0" : ""} setShowMobile={setShowMobile} />
 		</div>
 	);

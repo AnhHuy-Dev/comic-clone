@@ -20,7 +20,7 @@ function NavbarMobileMenu({ className, setShowMobile }: Props) {
 	const pathname = usePathname();
 
 	return (
-		<div className={twMerge(`fixed right-0 top-0 bottom-0 w-[90vw] md:w-[50vw]  bg-white z-10 px-5 py-3 translate-x-[100%] transition-all duration-[400ms]`, className)}>
+		<div className={twMerge(`fixed right-0 top-0 bottom-0 w-[90vw] md:w-[50vw]  bg-white z-30 px-5 py-3 translate-x-[100%] transition-all duration-[400ms]`, className)}>
 			<div className="flex justify-end" onClick={() => setShowMobile(false)}>
 				<RiCloseFill className="w-8 h-8" strokeWidth={2} />
 			</div>

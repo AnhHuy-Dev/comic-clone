@@ -1,8 +1,12 @@
+"use client";
+import { useRouter } from "next/navigation";
 import { PiSpinnerBold } from "react-icons/pi";
 
 function MediaComic({ comic }: { comic: any }) {
+	const router = useRouter();
+
 	return (
-		<div className="flex px-2 py-1 bg-white gap-x-3">
+		<div className="flex px-2 py-1 bg-white gap-x-3 cursor-pointer hover:bg-black/10" onClick={() => router.push(`/comic/${comic.id}`)}>
 			<div className="relative flex-shrink-0">
 				<img src={comic.thumbnail} className="w-16 h-24 aspect-auto object-cover rounded-md border-emerald-500 border" alt={comic.title} />
 			</div>

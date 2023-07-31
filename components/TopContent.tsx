@@ -54,6 +54,7 @@ function TopContent() {
 		const newUrl = qs.stringifyUrl({
 			url: url,
 			query: {
+				tab: tab,
 				status: status,
 			},
 		});
@@ -129,7 +130,14 @@ function TopContent() {
 							return <ComicCard key={item.id} comic={item} />;
 						})}
 					</div>
-					<PaginationComic countPage={content.totalPage!} defaultPage={Number(pageCurrent)} />
+					<PaginationComic
+						countPage={content.totalPage!}
+						defaultPage={Number(pageCurrent)}
+						top={{
+							tab: tab!,
+							status: statusCurrent!,
+						}}
+					/>
 					<Footer />
 				</>
 			) : (

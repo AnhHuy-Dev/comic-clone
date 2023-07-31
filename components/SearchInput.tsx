@@ -3,7 +3,7 @@
 import getSearchSuggestComics from "@/actions/getSearchComics";
 import useDebounce from "@/hooks/useDebounce";
 import { Comic } from "@/types";
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
 import { HiMagnifyingGlass } from "react-icons/hi2";
 import { twMerge } from "tailwind-merge";
 import MediaComic from "./MediaComic";
@@ -19,6 +19,7 @@ function SearchInput({ className, setShow }: Props) {
 	const [searchComics, setSearchComics] = useState<Comic[]>([]);
 	const debounceValue = useDebounce(value, 500);
 	const router = useRouter();
+	const [isFocused, setIsFocused] = useState(false);
 
 	useEffect(() => {
 		value !== "" && getSearchSuggestComics(value).then((data) => setSearchComics(data));
@@ -37,13 +38,25 @@ function SearchInput({ className, setShow }: Props) {
 				name="title"
 				placeholder="Search comics/authors"
 				className="rounded-full w-full border-2 px-2 py-1 focus:border-[#10b981] focus:outline-none placeholder:text-black/40 lg:placeholder:text-sm lg:pl-2 lg:w-[220px] search-input"
-				onChange={(e) => setValue(e.target.value)}
+				onFocus={() => setIsFocused(true)}
+				onBlur={() => {
+					setTimeout(() => {
+						setIsFocused(false);
+					}, 100);
+				}}
+				onChange={(e) => {
+					setValue(e.target.value);
+				}}
 			/>
 			<HiMagnifyingGlass className="w-5 h-5 absolute right-4 top-[50%] -translate-y-[50%]" onClick={() => handleSearch()} />
 			{searchComics.length > 0 && value !== "" && (
-				<div className="absolute top-[120%] right-0 border shadow-md w-full lg:w-[150%] max-h-[400px] h-[315px] overflow-y-scroll overflow-x-hidden rounded-lg search-menu z-10">
-					{searchComics.map((item) => {
-						return <MediaComic key={item.id} comic={item} />;
+				<div
+					className={twMerge(
+						`absolute top-[120%] right-0 border shadow-md w-full lg:w-[150%] max-h-[400px] h-[315px] overflow-y-scroll overflow-x-hidden rounded-lg search-menu z-10 bg-white`,
+						!isFocused && "hidden"
+					)}>
+					{searchComics.map((item, index) => {
+						return <MediaComic key={index} comic={item} />;
 					})}
 				</div>
 			)}

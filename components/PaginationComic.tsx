@@ -2,8 +2,22 @@
 import Pagination from "@mui/material/Pagination";
 import { usePathname, useRouter } from "next/navigation";
 import qs from "query-string";
+import { useEffect, useState } from "react";
 
-export default function PaginationComic({ countPage, defaultPage }: { countPage: number; defaultPage: number }) {
+export default function PaginationComic({
+	countPage,
+	defaultPage,
+	type,
+	top,
+}: {
+	countPage: number;
+	defaultPage: number;
+	type?: string;
+	top?: {
+		status: string;
+		tab: string;
+	};
+}) {
 	const router = useRouter();
 	const url = usePathname();
 
@@ -11,6 +25,9 @@ export default function PaginationComic({ countPage, defaultPage }: { countPage:
 		const newUrl = qs.stringifyUrl({
 			url: url,
 			query: {
+				tab: top?.tab,
+				status: top?.status,
+				type: type,
 				page: page,
 			},
 		});

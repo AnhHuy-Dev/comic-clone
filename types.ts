@@ -67,3 +67,15 @@ export interface Genres {
 	name: string;
 	description: string;
 }
+
+export interface HistoryComic {
+	id: string;
+	title: string;
+	thumbnail: string;
+	authors: string | string[];
+	status: string;
+	reading_at: number;
+	is_adult: boolean;
+	last_reading: string;
+	chapter_id: number;
+}

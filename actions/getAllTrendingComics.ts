@@ -8,8 +8,8 @@ type Props = {
 	current_page: number | undefined;
 };
 
-export default async function getAllBoyComics(page?: number): Promise<Props> {
-	const data = await Comics.getBoyComics(page).then((data) => {
+export default async function getAllTrendingComics(page?: number): Promise<Props> {
+	const data = await Comics.getTrendingComics(page).then((data) => {
 		return data;
 	});
 

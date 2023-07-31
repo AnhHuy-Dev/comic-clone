@@ -4,6 +4,7 @@ import { ReplyCommentIcon } from "@/icon";
 import { Comment } from "@/types";
 import { useEffect, useState } from "react";
 import { AiOutlineLike } from "react-icons/ai";
+import { BsReplyAll } from "react-icons/bs";
 import { BeatLoader } from "react-spinners";
 
 type Props = {
@@ -70,7 +71,7 @@ function CommentPage({ id }: { id: string }) {
 											item.replies.map((item, index) => {
 												return (
 													<div key={index} className="mt-4 flex gap-x-6">
-														<ReplyCommentIcon className="hidden sm:inline-flex" />
+														<BsReplyAll className="hidden sm:inline-flex w-7 h-7 rotate-180" color="#10b982" />
 														<div className="flex gap-x-4">
 															<img src={item.avatar} alt="" className="w-10 h-10 rounded-full" />
 															<div>

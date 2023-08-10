@@ -1,5 +1,4 @@
 "use client";
-import getCompletedComics from "@/actions/getCompletedComics";
 import { Comic } from "@/types";
 import { useSearchParams } from "next/navigation";
 import { ReactNode, useEffect, useState } from "react";
@@ -8,11 +7,8 @@ import ComicCard from "./ComicCard";
 import Footer from "./Footer";
 import PaginationComic from "./PaginationComic";
 import { BsFillPatchCheckFill } from "react-icons/bs";
-import getNewComics from "@/actions/getNewComics";
-import getPopularComics from "@/actions/getPopularComics";
-import getRecentlyComics from "@/actions/getRecentlyComics";
-import getAllBoyComics from "@/actions/getAllBoyComics";
-import getAllGirlComics from "@/actions/getAllGirlComics";
+import axios from "axios";
+import { apiUrl } from "@/constant";
 
 type Props = {
 	comics: Comic[];
@@ -27,59 +23,66 @@ function ComicContentPart({ title, type, children }: { title: string; type: stri
 	const pageCurrent = searchParam.get("page") ? searchParam.get("page") : 1;
 
 	useEffect(() => {
-		switch (type) {
-			case "new":
-				getNewComics(Number(pageCurrent)).then((data) => {
-					setContent({
-						comics: data.comics,
-						totalPage: data.total_pages,
+		const fetchData = async () => {
+			let res;
+			switch (type) {
+				case "new":
+					res = await axios.get(`${apiUrl}/new-comics`, {
+						params: {
+							page: pageCurrent,
+						},
 					});
-				});
-				break;
-			case "popular":
-				getPopularComics(Number(pageCurrent)).then((data) => {
-					setContent({
-						comics: data.comics,
-						totalPage: data.total_pages,
+					break;
+				case "popular":
+					res = await axios.get(`${apiUrl}/recommend-comics`);
+					break;
+				case "completed":
+					res = await axios.get(`${apiUrl}/completed-comics`, {
+						params: {
+							page: pageCurrent,
+						},
 					});
-				});
-				break;
-			case "completed":
-				getCompletedComics(Number(pageCurrent)).then((data) => {
-					setContent({
-						comics: data.comics,
-						totalPage: data.total_pages,
+					break;
+				case "recently":
+					res = await axios.get(`${apiUrl}/recent-update-comics`, {
+						params: {
+							page: pageCurrent,
+						},
 					});
-				});
-				break;
-			case "recently":
-				getRecentlyComics(Number(pageCurrent)).then((data) => {
-					setContent({
-						comics: data.comics,
-						totalPage: data.total_pages,
+					break;
+				case "boy":
+					res = await axios.get(`${apiUrl}/boy-comics`, {
+						params: {
+							page: pageCurrent,
+						},
 					});
-				});
-				break;
-			case "boy":
-				getAllBoyComics(Number(pageCurrent)).then((data) => {
-					setContent({
-						comics: data.comics,
-						totalPage: data.total_pages,
+					break;
+				case "girl":
+					res = await axios.get(`${apiUrl}/girl-comics`, {
+						params: {
+							page: pageCurrent,
+						},
 					});
+					break;
+				default:
+					break;
+			}
+			if (type === "popular") {
+				setContent({
+					comics: res?.data,
+					totalPage: 1,
 				});
-				break;
-			case "girl":
-				getAllGirlComics(Number(pageCurrent)).then((data) => {
-					setContent({
-						comics: data.comics,
-						totalPage: data.total_pages,
-					});
-				});
-				break;
-			default:
-				break;
-		}
+				return;
+			}
+			setContent({
+				comics: res?.data.comics,
+				totalPage: res?.data.total_pages,
+			});
+		};
+		fetchData();
 	}, [pageCurrent]);
+
+	console.log(content.comics);
 
 	return (
 		<div className="px-3 xl:px-[220px] lg:py-2">

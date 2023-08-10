@@ -12,17 +12,21 @@ import ComicCard from "./ComicCard";
 import PaginationComic from "./PaginationComic";
 import ClipLoader from "react-spinners/ClipLoader";
 import Footer from "./Footer";
+import axios from "axios";
+import { apiUrl } from "@/constant";
 
 type Props = {
 	comics: Comic[];
 	totalPage: number | undefined;
 };
-function GenresContent({ genres }: { genres: Genres[] }) {
+
+function GenresContent() {
 	const [content, setContent] = useState<Props>({
 		comics: [],
 		totalPage: undefined,
 	});
 
+	const [genres, setGenres] = useState<Genres[]>([]);
 	const searchParams = useSearchParams();
 	const type = searchParams.get("type");
 	const pageCurrent = searchParams.get("page") === null ? 1 : searchParams.get("page");
@@ -30,12 +34,26 @@ function GenresContent({ genres }: { genres: Genres[] }) {
 	const router = useRouter();
 
 	useEffect(() => {
-		getAllGenreComic(type!, Number(pageCurrent)).then((data) => {
-			setContent({
-				comics: data.comics,
-				totalPage: data.total_pages,
+		const fetchData = async () => {
+			const res = await axios.get(`${apiUrl}/genres`);
+			setGenres(res.data);
+		};
+		fetchData();
+	}, []);
+
+	useEffect(() => {
+		const fetchData = async () => {
+			const res = await axios.get(`${apiUrl}/genres/${type}`, {
+				params: {
+					page: pageCurrent,
+				},
 			});
-		});
+			setContent({
+				comics: res.data.comics,
+				totalPage: res.data.total_pages,
+			});
+		};
+		fetchData();
 	}, [type, pageCurrent]);
 
 	const handleClick = (id: string) => {

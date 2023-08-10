@@ -1,10 +1,10 @@
 "use client";
-import getAllChapter from "@/actions/getAllChapter";
-import getDetailComic from "@/actions/getDetailComic";
 import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
 import ScrollToTop from "@/components/ScrollToTop";
+import { apiUrl } from "@/constant";
 import { Chapter, ComicDetail } from "@/types";
+import axios from "axios";
 import { useEffect, useState } from "react";
 import ComicPageContent from "./components/ComicPageContent";
 
@@ -14,8 +14,13 @@ function ComicPage({ params }: { params: any }) {
 	const { id } = params;
 
 	useEffect(() => {
-		getDetailComic(id).then((data) => setComic(data));
-		getAllChapter(id).then((data) => setChapters(data));
+		const fetchData = async () => {
+			const resComics = await axios.get(`${apiUrl}/comics/${id}`);
+			const resComicsChapter = await axios.get(`${apiUrl}/comics/${id}/chapters`);
+			setComic(resComics.data);
+			setChapters([...resComicsChapter.data.reverse()]);
+		};
+		fetchData();
 	}, [id]);
 
 	return (

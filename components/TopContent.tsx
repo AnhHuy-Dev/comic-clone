@@ -12,11 +12,14 @@ import PaginationComic from "./PaginationComic";
 import Footer from "./Footer";
 import { ClipLoader } from "react-spinners";
 import qs from "query-string";
+import { apiUrl } from "@/constant";
+import axios from "axios";
 
 type Props = {
 	comics: Comic[];
 	totalPage: number | undefined;
 };
+
 function TopContent() {
 	const searhParam = useSearchParams();
 	const tab = searhParam.get("tab") ? searhParam.get("tab") : "all";
@@ -29,12 +32,29 @@ function TopContent() {
 	});
 
 	useEffect(() => {
-		getTopComics(statusCurrent!, Number(pageCurrent), tab!).then((data) => {
+		const fetchData = async () => {
+			let res;
+			if (tab === "all") {
+				res = await axios.get(`${apiUrl}/top`, {
+					params: {
+						page: pageCurrent,
+						status: statusCurrent,
+					},
+				});
+			} else {
+				res = await axios.get(`${apiUrl}/top/${tab}`, {
+					params: {
+						page: pageCurrent,
+						status: statusCurrent,
+					},
+				});
+			}
 			setContent({
-				comics: data.comics,
-				totalPage: data.total_pages,
+				comics: res.data.comics,
+				totalPage: res.data.total_pages,
 			});
-		});
+		};
+		fetchData();
 	}, [tab, statusCurrent, pageCurrent]);
 
 	const url = usePathname();

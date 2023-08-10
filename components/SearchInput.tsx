@@ -1,6 +1,5 @@
 "use client";
 
-import getSearchSuggestComics from "@/actions/getSearchComics";
 import useDebounce from "@/hooks/useDebounce";
 import { Comic } from "@/types";
 import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
@@ -8,6 +7,8 @@ import { HiMagnifyingGlass } from "react-icons/hi2";
 import { twMerge } from "tailwind-merge";
 import MediaComic from "./MediaComic";
 import { useRouter } from "next/navigation";
+import axios from "axios";
+import { apiUrl } from "@/constant";
 
 type Props = {
 	className?: string;
@@ -22,7 +23,15 @@ function SearchInput({ className, setShow }: Props) {
 	const [isFocused, setIsFocused] = useState(false);
 
 	useEffect(() => {
-		value !== "" && getSearchSuggestComics(value).then((data) => setSearchComics(data));
+		const fetchData = async () => {
+			const res = await axios.get(`${apiUrl}/search-suggest`, {
+				params: {
+					q: value,
+				},
+			});
+			setSearchComics(res.data);
+		};
+		if (value !== "") fetchData();
 	}, [debounceValue]);
 
 	const handleSearch = () => {

@@ -1,5 +1,5 @@
 "use client";
-import getComicComment from "@/actions/getComicComment";
+// import getComicComment from "@/actions/getComicComment";
 import { ReplyCommentIcon } from "@/icon";
 import { Comment } from "@/types";
 import { useEffect, useState } from "react";
@@ -21,25 +21,25 @@ function CommentPage({ id }: { id: string }) {
 	});
 
 	useEffect(() => {
-		getComicComment(id, content.currentPage).then((data) => {
-			if (content.currentPage! > 1) {
-				setContent((prev: any) => {
-					return {
-						comments: [...prev.comments, ...data.comments],
-						currentPage: data.current_page,
-						totalPage: data.total_pages,
-					};
-				});
-			} else {
-				setContent((prev: any) => {
-					return {
-						comments: data.comments,
-						currentPage: data.current_page,
-						totalPage: data.total_pages,
-					};
-				});
-			}
-		});
+		// getComicComment(id, content.currentPage).then((data) => {
+		// 	if (content.currentPage! > 1) {
+		// 		setContent((prev: any) => {
+		// 			return {
+		// 				comments: [...prev.comments, ...data.comments],
+		// 				currentPage: data.current_page,
+		// 				totalPage: data.total_pages,
+		// 			};
+		// 		});
+		// 	} else {
+		// 		setContent((prev: any) => {
+		// 			return {
+		// 				comments: data.comments,
+		// 				currentPage: data.current_page,
+		// 				totalPage: data.total_pages,
+		// 			};
+		// 		});
+		// 	}
+		// });
 	}, [id, content.currentPage]);
 
 	return (

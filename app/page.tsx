@@ -6,16 +6,12 @@ import { BiTimeFive } from "react-icons/bi";
 import { BoyIcon, GirlIcon } from "@/icon";
 import Footer from "@/components/Footer";
 import { useEffect, useState } from "react";
-import getAllTrendingComics from "@/actions/getAllTrendingComics";
 import { Comic } from "@/types";
-import getPopularComics from "@/actions/getPopularComics";
-import getCompletedComics from "@/actions/getCompletedComics";
-import getRecentlyComics from "@/actions/getRecentlyComics";
-import getAllBoyComics from "@/actions/getAllBoyComics";
-import getAllGirlComics from "@/actions/getAllGirlComics";
+import axios from "axios";
+import { apiUrl } from "../constant";
 
 export default function Home() {
-	const [trendingComics, setTredingComics] = useState<Comic[]>();
+	const [trendingComics, setTrendingComics] = useState<Comic[]>();
 	const [popularComics, setPopularComics] = useState<Comic[]>();
 	const [completedComics, setCompletedComics] = useState<Comic[]>();
 	const [recentlyComics, setRecentlyComics] = useState<Comic[]>();
@@ -23,12 +19,26 @@ export default function Home() {
 	const [girlComics, setGirlComics] = useState<Comic[]>();
 
 	useEffect(() => {
-		getAllTrendingComics().then((data) => setTredingComics(data.comics));
-		getPopularComics().then((data) => setPopularComics(data.comics));
-		getCompletedComics().then((data) => setCompletedComics(data.comics));
-		getRecentlyComics().then((data) => setRecentlyComics(data.comics));
-		getAllBoyComics().then((data) => setBoyComics(data.comics));
-		getAllGirlComics().then((data) => setGirlComics(data.comics));
+		const fetchData = async () => {
+			const trendingRes = await axios.get(`${apiUrl}/trending-comics`);
+			setTrendingComics(trendingRes.data.comics);
+
+			const popularRes = await axios.get(`${apiUrl}/recommend-comics`);
+			setPopularComics(popularRes.data);
+
+			const completedRes = await axios.get(`${apiUrl}/completed-comics`);
+			setCompletedComics(completedRes.data.comics);
+
+			const recentlyRes = await axios.get(`${apiUrl}/recent-update-comics`);
+			setRecentlyComics(recentlyRes.data.comics);
+
+			const boyRes = await axios.get(`${apiUrl}/boy-comics`);
+			setBoyComics(boyRes.data.comics);
+
+			const girlRes = await axios.get(`${apiUrl}/girl-comics`);
+			setGirlComics(girlRes.data.comics);
+		};
+		fetchData();
 	}, []);
 
 	return (

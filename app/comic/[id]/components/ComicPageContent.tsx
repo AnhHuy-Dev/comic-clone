@@ -9,14 +9,11 @@ import { ClipLoader } from "react-spinners";
 import { twMerge } from "tailwind-merge";
 import ChapterPage from "./ChapterPage";
 import { HiOutlineBookOpen } from "react-icons/hi";
-import { CommentIcon } from "@/icon";
-import CommentPage from "@/components/CommentPage";
 import { usePathname, useRouter } from "next/navigation";
 import { useStoreProivider } from "@/context/StoreProvider";
 
 function ComicPageContent({ comic, chapters, id }: { comic: ComicDetail; chapters: Chapter[]; id: string }) {
 	const [showMore, setShowMore] = useState(false);
-	const [type, setType] = useState("chapter");
 	const router = useRouter();
 	const url = usePathname();
 	const { comicItems } = useStoreProivider();
@@ -101,16 +98,14 @@ function ComicPageContent({ comic, chapters, id }: { comic: ComicDetail; chapter
 					</div>
 					<div className="max-w-5xl mx-auto">
 						<div className="flex gap-x-3 pt-2 pb-2 border-b-2 ">
-							<div className={twMerge(`flex items-center gap-x-2 font-semibold text-lg  cursor-pointer`, type === "chapter" && `text-emerald-500`)} onClick={() => setType("chapter")}>
+							<div className={twMerge(`flex items-center gap-x-2 font-semibold text-lg  cursor-pointer text-emerald-500`)}>
 								<HiOutlineBookOpen className="w-6 h-6" />
 								<span>Chapters</span>
 							</div>
-							<div className={twMerge(`flex items-center gap-x-2 font-semibold text-lg  cursor-pointer`, type === "comment" && `text-emerald-500`)} onClick={() => setType("comment")}>
-								<CommentIcon className="" />
-								<span>Comments</span>
-							</div>
 						</div>
-						<div className="mt-4">{type === "chapter" ? <ChapterPage chapters={chapters} /> : <CommentPage id={id} />}</div>
+						<div className="mt-4">
+							<ChapterPage chapters={chapters} />{" "}
+						</div>
 					</div>
 				</>
 			) : (

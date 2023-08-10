@@ -1,20 +1,18 @@
 "use client";
 
-import getSingleChapterComic from "@/actions/getSingleChapterComic";
 import { ChangeEvent, useEffect, useState } from "react";
 import { BiCommentDetail } from "react-icons/bi";
 import { AiOutlineDownload, AiOutlineLike } from "react-icons/ai";
 import { Chapter, ComicDetail, Comment } from "@/types";
 import { twMerge } from "tailwind-merge";
 import { usePathname, useRouter } from "next/navigation";
-import getComicComment from "@/actions/getComicComment";
-import { ReplyCommentIcon } from "@/icon";
 import { IoClose } from "react-icons/io5";
 import { BeatLoader } from "react-spinners";
 import ScrollToTop from "@/components/ScrollToTop";
 import { BsArrowBarLeft, BsReplyAll } from "react-icons/bs";
-import getDetailComic from "@/actions/getDetailComic";
 import { useStoreProivider } from "@/context/StoreProvider";
+import axios from "axios";
+import { apiUrl } from "@/constant";
 
 type Props = {
 	allChapters: Chapter[];
@@ -112,52 +110,59 @@ function Page({ params }: { params: any }) {
 	};
 
 	useEffect(() => {
-		getSingleChapterComic(params.id, params.chapterId).then((data1) => {
-			getDetailComic(params.id).then((data2) => {
-				addComic({
-					id: data2.id,
-					title: data2.title,
-					authors: data2.authors,
-					chapter_id: params.chapterId,
-					reading_at: new Date().getTime(),
-					thumbnail: data2.thumbnail,
-					is_adult: data2.is_adult,
-					last_reading: data1.chapter_name!,
-					status: data2.status!,
-				});
-				setComic(data2);
-			});
-			setContent({
-				allChapters: data1.chapters,
-				comicName: data1.comic_name,
-				imageComics: data1.images,
-				chapterName: data1.chapter_name,
-			});
-		});
+		// getSingleChapterComic(params.id, params.chapterId).then((data1) => {
+		// 	getDetailComic(params.id).then((resComic.data) => {
+		// 		addComic({
+		// 			id: data2.id,
+		// 			title: data2.title,
+		// 			authors: data2.authors,
+		// 			chapter_id: params.chapterId,
+		// 			reading_at: new Date().getTime(),
+		// 			thumbnail: data2.thumbnail,
+		// 			is_adult: data2.is_adult,
+		// 			last_reading: data1.chapter_name!,
+		// 			status: data2.status!,
+		// 		});
+		// 		setComic(data2);
+		// 	});
+		// 	setContent({
+		// 		allChapters: data1.chapters,
+		// 		comicName: data1.comic_name,
+		// 		imageComics: data1.images,
+		// 		chapterName: data1.chapter_name,
+		// 	});
+		// });
 
-		getComicComment(params.id, comments?.pageComment, params.chapterId).then((data) => {
-			if (comments.pageComment! > 1) {
-				setComments((prev: any) => {
-					return {
-						listComments: [...prev.listComments, ...data.comments],
-						pageComment: data.current_page,
-						totalPageComment: data.total_pages,
-					};
-				});
-			} else {
-				setComments((prev: any) => {
-					return {
-						listComments: data.comments,
-						pageComment: data.current_page,
-						totalPageComment: data.total_pages,
-					};
-				});
-			}
-		});
+		const fetchData = async () => {
+			const resComic = await axios.get(`${apiUrl}/comics/${params.id}`);
+			const resChapter = await axios.get(`${apiUrl}/comics/${params.id}/chapters/${params.chapterId}`);
+			addComic({
+				id: resComic.data.id,
+				title: resComic.data.title,
+				authors: resComic.data.authors,
+				chapter_id: params.chapterId,
+				reading_at: new Date().getTime(),
+				thumbnail: resComic.data.thumbnail,
+				is_adult: resComic.data.is_adult,
+				last_reading: resChapter.data.chapter_name!,
+				status: resComic.data.status!,
+			});
+			setComic(resComic.data);
+			setContent({
+				allChapters: resChapter.data.chapters,
+				comicName: resChapter.data.comic_name,
+				imageComics: resChapter.data.images,
+				chapterName: resChapter.data.chapter_name,
+			});
+		};
+		fetchData();
+
 		window.addEventListener("scroll", handleScrollImage);
 
 		return () => window.removeEventListener("scroll", handleScrollImage);
-	}, [params, comments.pageComment, showComment]);
+	}, [params]);
+
+	console.log(content);
 
 	return (
 		<>

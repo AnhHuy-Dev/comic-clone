@@ -15,7 +15,7 @@ function Navbar() {
 		<div className="px-3 mt-2 xl:px-[124px] lg:py-2 flex justify-between items-center border-b-2">
 			<div className="flex justify-between lg:justify-start items-center w-full">
 				<Link href="/" className="flex items-center gap-x-2 cursor-pointer">
-					<img src="/images/logo.png" alt="" className="w-full h-[40px]" />
+					<img src="/images/logo.png" alt="" className="w-[40px] h-[40px]" />
 					<h1 className="text-2xl font-bold text-emerald-500 font-[Chocopy]">NCOMICS</h1>
 				</Link>
 				<svg

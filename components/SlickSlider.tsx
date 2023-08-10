@@ -34,7 +34,7 @@ export default function SlickSlider({ children, autoplay, infinite, autoplaySpee
 		infinite: infinite || true,
 		speed: 500,
 		slidesToShow: 5,
-		swipeToSlide: true,
+		// swipeToSlide: true,
 		autoplay: autoplay || false,
 		autoplaySpeed: autoplaySpeed || 2000,
 		rows: rows || 1,

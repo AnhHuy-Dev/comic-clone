@@ -56,10 +56,17 @@
 .MuiPagination-ul li button {
 	font-size: 18px;
 }
-
+.MuiPagination-root {
+	width: 100%;
+}
 .MuiPagination-ul {
 	display: flex;
 	justify-content: center;
+	gap: 12px;
+}
+
+.MuiPagination-ul li {
+	width: 24px;
 }
 
 .MuiPagination-ul li button {
@@ -90,8 +97,8 @@
 	}
 }
 
-.css-yuzg60-MuiButtonBase-root-MuiPaginationItem-root.Mui-selected {
-	color: #fff;
+.Mui-selected {
+	color: #fff !important;
 	background-color: #10b982 !important;
 }
 

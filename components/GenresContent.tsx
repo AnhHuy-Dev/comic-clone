@@ -100,7 +100,10 @@ function GenresContent() {
 						<div
 							key={item.id}
 							onClick={() => handleClick(item.id)}
-							className={twMerge(`w-max h-full leading-[48px] text-center cursor-pointer genres-item select-none border-t border-b`, type === item.id && `bg-emerald-500 text-white`)}>
+							className={twMerge(
+								`text-sm md:text-[16px] w-max h-full leading-[48px] text-center cursor-pointer genres-item select-none border-t border-b`,
+								type === item.id && `bg-emerald-500 text-white`
+							)}>
 							{item.name}
 						</div>
 					);

@@ -2,7 +2,6 @@
 import Pagination from "@mui/material/Pagination";
 import { usePathname, useRouter } from "next/navigation";
 import qs from "query-string";
-import { useEffect, useState } from "react";
 
 export default function PaginationComic({
 	countPage,
@@ -37,7 +36,7 @@ export default function PaginationComic({
 
 	return (
 		<div className="flex justify-center py-8">
-			<Pagination count={countPage} page={defaultPage} showFirstButton showLastButton className="w-full" onChange={(event, page) => handlePagination(page)} />
+			<Pagination count={countPage} page={defaultPage} showFirstButton showLastButton className="w-ful" onChange={(event, page) => handlePagination(page)} />
 		</div>
 	);
 }

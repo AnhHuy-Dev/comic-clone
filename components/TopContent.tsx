@@ -4,7 +4,6 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { IoMdSnow } from "react-icons/io";
 import { twMerge } from "tailwind-merge";
 import { BiComment } from "react-icons/bi";
-import getTopComics from "@/actions/getTopComics";
 import { useEffect, useState } from "react";
 import { Comic } from "@/types";
 import ComicCard from "./ComicCard";

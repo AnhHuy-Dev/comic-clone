@@ -6,7 +6,6 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { AiFillInfoCircle } from "react-icons/ai";
-import getAllGenreComic from "@/actions/getAllGenreComic";
 import { useEffect, useState } from "react";
 import ComicCard from "./ComicCard";
 import PaginationComic from "./PaginationComic";

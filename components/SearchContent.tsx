@@ -1,6 +1,5 @@
 "use client";
 
-import getAllSearchComics from "@/actions/getAllSearchComics";
 import { Comic, Genres } from "@/types";
 import { AiOutlineRight } from "react-icons/ai";
 import { useSearchParams } from "next/navigation";
@@ -10,6 +9,8 @@ import { ClipLoader } from "react-spinners";
 import Footer from "./Footer";
 import PaginationComic from "./PaginationComic";
 import Link from "next/link";
+import axios from "axios";
+import { apiUrl } from "@/constant";
 
 type Props = {
 	comics: Comic[];
@@ -27,12 +28,19 @@ function SearchContent() {
 	const pageCurrent = searchParam.get("page") ? searchParam.get("page") : 1;
 
 	useEffect(() => {
-		getAllSearchComics(title!, Number(pageCurrent)).then((data) => {
-			setContent({
-				comics: data.comics,
-				totalPage: data.total_pages,
+		const fetchData = async () => {
+			const res = await axios.get(`${apiUrl}/search`, {
+				params: {
+					q: title,
+					page: pageCurrent,
+				},
 			});
-		});
+			setContent({
+				comics: res.data.comics,
+				totalPage: res.data.total_pages,
+			});
+		};
+		fetchData();
 	}, [title, pageCurrent]);
 
 	return (

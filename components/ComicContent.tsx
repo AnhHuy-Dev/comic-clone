@@ -12,9 +12,10 @@ type Props = {
 	title?: string;
 	children?: ReactNode;
 	trending?: boolean;
+	popular?: boolean;
 };
 
-function ComicContent({ comics, title, children, trending = false }: Props) {
+function ComicContent({ comics, title, children, trending = false, popular = false }: Props) {
 	const [width, setWidth] = useState(0);
 
 	const handleChange = () => {
@@ -44,10 +45,10 @@ function ComicContent({ comics, title, children, trending = false }: Props) {
 					</Link>
 				</div>
 			)}
-			<SlickSlider autoplay={trending} infinite={trending} rows={!trending && width >= 768 ? 2 : 1}>
+			<SlickSlider autoplay={trending} infinite={trending} rows={!popular && !trending && width >= 768 ? 2 : 1}>
 				{comics &&
 					comics.map((item: Comic) => {
-						return <ComicCard comic={item} key={item.id} trending={trending} />;
+						return <ComicCard comic={item} key={item.id} trending={trending} popular={popular} />;
 					})}
 			</SlickSlider>
 			{!comics && (

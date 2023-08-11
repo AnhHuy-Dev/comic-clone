@@ -45,7 +45,7 @@ export default function Home() {
 		<>
 			<Navbar />
 			<ComicContent comics={trendingComics!} trending={true} />
-			<ComicContent comics={popularComics!} title="popular">
+			<ComicContent popular={true} comics={popularComics!} title="popular">
 				<BsFire className="w-6 h-6 lg:w-8 lg:h-8" color="#10b982" />
 			</ComicContent>
 			<ComicContent comics={completedComics!} title="completed">

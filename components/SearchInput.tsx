@@ -35,6 +35,7 @@ function SearchInput({ className, setShow }: Props) {
 	}, [debounceValue]);
 
 	const handleSearch = () => {
+		if (value === "") return;
 		router.push(`/search?title=${value}`);
 		router.refresh();
 		setShow && setShow(false);
@@ -46,7 +47,7 @@ function SearchInput({ className, setShow }: Props) {
 				type="text"
 				name="title"
 				placeholder="Search comics/authors"
-				className="rounded-full w-full border-2 px-2 py-1 focus:border-[#10b981] focus:outline-none placeholder:text-black/40 lg:placeholder:text-sm lg:pl-2 lg:w-[220px] search-input"
+				className="rounded-full w-full border-2 px-2 py-1 focus:border-[#10b981] focus:outline-none placeholder:text-black/40 lg:placeholder:text-sm lg:pl-2 lg:w-[300px] search-input"
 				onFocus={() => setIsFocused(true)}
 				onBlur={() => {
 					setTimeout(() => {
@@ -57,7 +58,10 @@ function SearchInput({ className, setShow }: Props) {
 					setValue(e.target.value);
 				}}
 			/>
-			<HiMagnifyingGlass className="w-5 h-5 absolute right-4 top-[50%] -translate-y-[50%]" onClick={() => handleSearch()} />
+			<div className="bg-gray-500/20 hover:opacity-50 cursor-pointer px-2 rounded-full h-[25px] absolute right-4 top-[50%] -translate-y-[50%]">
+				<HiMagnifyingGlass className="w-5 h-5 relative top-[2px]" onClick={() => handleSearch()} />
+			</div>
+
 			{searchComics.length > 0 && value !== "" && (
 				<div
 					className={twMerge(

@@ -20,6 +20,7 @@ type Props = {
 function SearchContent() {
 	const searchParam = useSearchParams();
 	const title = searchParam.get("title");
+	const [isLoading, setIsLoading] = useState(false);
 	const [content, setContent] = useState<Props>({
 		comics: [],
 		totalPage: undefined,
@@ -29,6 +30,7 @@ function SearchContent() {
 
 	useEffect(() => {
 		const fetchData = async () => {
+			setIsLoading(true);
 			const res = await axios.get(`${apiUrl}/search`, {
 				params: {
 					q: title,
@@ -39,6 +41,7 @@ function SearchContent() {
 				comics: res.data.comics,
 				totalPage: res.data.total_pages,
 			});
+			setIsLoading(false);
 		};
 		fetchData();
 	}, [title, pageCurrent]);
@@ -52,7 +55,19 @@ function SearchContent() {
 				<AiOutlineRight className="inline-block" />
 				<strong className="text-emerald-500">{title}</strong>
 			</div>
-			{content.comics.length > 0 ? (
+			{isLoading && (
+				<ClipLoader
+					cssOverride={{
+						position: "fixed",
+						top: "50%",
+						left: "50%",
+						width: "50px",
+						height: "50px",
+						borderWidth: "4px",
+					}}
+				/>
+			)}
+			{!isLoading && content.comics.length > 0 ? (
 				<>
 					<div className="grid grid-cols-1 md:grid-cols-2 gap-6 py-5">
 						{content.comics.map((item: any, index: number) => {
@@ -93,16 +108,13 @@ function SearchContent() {
 					<Footer />
 				</>
 			) : (
-				<ClipLoader
-					cssOverride={{
-						position: "fixed",
-						top: "50%",
-						left: "50%",
-						width: "50px",
-						height: "50px",
-						borderWidth: "4px",
-					}}
-				/>
+				<>
+					{!isLoading && (
+						<div className="mt-8 text-center font-bold text-lg">
+							<h1>Not find any comics</h1>
+						</div>
+					)}
+				</>
 			)}
 		</div>
 	);

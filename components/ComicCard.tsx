@@ -3,13 +3,15 @@ import { PiSpinnerBold } from "react-icons/pi";
 import { AiFillEye, AiOutlineHeart } from "react-icons/ai";
 import { FaCommentAlt } from "react-icons/fa";
 import Link from "next/link";
+import formatNumber from "@/utils/formatNumber";
 
 type Props = {
 	comic: Comic;
 	trending?: boolean;
+	popular?: boolean;
 };
 
-function ComicCard({ comic, trending = false }: Props) {
+function ComicCard({ comic, trending = false, popular = false }: Props) {
 	return (
 		<Link href={`/comic/${comic.id}`}>
 			<div className="swiper-slide w-[242px] px-1 py-1" data-swiper-slide-index="4">
@@ -36,7 +38,7 @@ function ComicCard({ comic, trending = false }: Props) {
 							</abbr>
 						</h5>
 						<span className="py-1"></span>
-						{trending !== true && (
+						{popular !== true && trending !== true && (
 							<>
 								<span className="text-sm text-gray-300 truncate font-semibold border-t-[1px] border-[#666768] py-1">
 									{comic?.authors === "Updating" ? (
@@ -51,15 +53,15 @@ function ComicCard({ comic, trending = false }: Props) {
 								<div className="text-[#10b982] justify-between text-[12px] hidden md:flex py-1">
 									<div className="flex gap-x-1 items-center bg-white/25 w-max px-1 rounded-lg">
 										<AiFillEye className="w-[12px] h-[12px]" color="#10b982" />
-										{comic.total_views}
+										{formatNumber(Number(comic.total_views))}
 									</div>
 									<div className="flex gap-x-1 items-center bg-white/25 w-max px-1 rounded-lg">
 										<AiOutlineHeart className="w-[12px] h-[12px]" color="#10b982" />
-										{comic.total_views}
+										{formatNumber(Number(comic.followers))}
 									</div>
 									<div className="flex gap-x-1 items-center bg-white/25 w-max px-1 rounded-lg">
 										<FaCommentAlt className="w-[12px] h-[12px]" color="#10b982" />
-										{comic.total_views}
+										{formatNumber(Number(0))}
 									</div>
 								</div>
 							</>

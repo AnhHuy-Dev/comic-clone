@@ -45,6 +45,7 @@ function SearchInput({ className, setShow }: Props) {
 		<div className={twMerge(`relative mt-4 lg:mt-0`, className)}>
 			<input
 				type="text"
+				value={value}
 				name="title"
 				placeholder="Search comics/authors"
 				className="rounded-full w-full border-2 px-2 py-1 focus:border-[#10b981] focus:outline-none placeholder:text-black/40 lg:placeholder:text-sm lg:pl-2 lg:w-[300px] search-input"

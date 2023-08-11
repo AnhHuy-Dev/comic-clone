@@ -8,6 +8,7 @@ export default function PaginationComic({
 	defaultPage,
 	type,
 	top,
+	title,
 }: {
 	countPage: number;
 	defaultPage: number;
@@ -16,6 +17,7 @@ export default function PaginationComic({
 		status: string;
 		tab: string;
 	};
+	title?: string;
 }) {
 	const router = useRouter();
 	const url = usePathname();
@@ -28,6 +30,7 @@ export default function PaginationComic({
 				status: top?.status,
 				type: type,
 				page: page,
+				title: title,
 			},
 		});
 		router.push(newUrl);

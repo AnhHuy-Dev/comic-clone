@@ -104,7 +104,7 @@ function SearchContent() {
 							);
 						})}
 					</div>
-					<PaginationComic countPage={content.totalPage!} defaultPage={Number(pageCurrent)} />
+					<PaginationComic countPage={content.totalPage!} title={title!} defaultPage={Number(pageCurrent)} />
 					<Footer />
 				</>
 			) : (

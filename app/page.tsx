@@ -9,9 +9,14 @@ import { useEffect, useState } from "react";
 import { Comic } from "@/types";
 import axios from "axios";
 import { apiUrl } from "../constant";
-
+import { useQuery } from "react-query";
+import { getTrendingComic } from "@/actions/getTrendingComic";
 export default function Home() {
-	const [trendingComics, setTrendingComics] = useState<Comic[]>();
+	const { data: trendingComics } = useQuery({
+		queryFn: () => getTrendingComic(),
+		queryKey: ["trending"],
+		staleTime: Infinity,
+	});
 	const [popularComics, setPopularComics] = useState<Comic[]>();
 	const [completedComics, setCompletedComics] = useState<Comic[]>();
 	const [recentlyComics, setRecentlyComics] = useState<Comic[]>();
@@ -20,9 +25,6 @@ export default function Home() {
 
 	useEffect(() => {
 		const fetchData = async () => {
-			const trendingRes = await axios.get(`${apiUrl}/trending-comics`);
-			setTrendingComics(trendingRes.data.comics);
-
 			const popularRes = await axios.get(`${apiUrl}/recommend-comics`);
 			setPopularComics(popularRes.data);
 
@@ -40,10 +42,10 @@ export default function Home() {
 		};
 		fetchData();
 	}, []);
-
 	return (
 		<>
 			<Navbar />
+			{/* {isLoading && <div>Loading...</div>} */}
 			<ComicContent comics={trendingComics!} trending={true} />
 			<ComicContent popular={true} comics={popularComics!} title="popular">
 				<BsFire className="w-6 h-6 lg:w-8 lg:h-8" color="#10b982" />

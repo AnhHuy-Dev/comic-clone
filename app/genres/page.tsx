@@ -1,6 +1,5 @@
 import GenresContent from "@/components/GenresContent";
 import Navbar from "@/components/Navbar";
-import ScrollToTop from "@/components/ScrollToTop";
 import { GenresIcon } from "@/icon";
 
 function GenresPage() {
@@ -12,7 +11,6 @@ function GenresPage() {
 				Genres
 			</div>
 			<GenresContent />
-			<ScrollToTop />
 		</>
 	);
 }

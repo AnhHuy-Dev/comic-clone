@@ -14,7 +14,7 @@ type Props = {
 	comics: Comic[];
 	totalPage: number | undefined;
 };
-function ComicContentPart({ title, type, children }: { title: string; type: string; children: ReactNode }) {
+function ComicContentPart({ title, type, children, comics }: { title: string; type: string; children: ReactNode; comics?: Comic[] }) {
 	const [content, setContent] = useState<Props>({
 		comics: [],
 		totalPage: undefined,
@@ -82,8 +82,6 @@ function ComicContentPart({ title, type, children }: { title: string; type: stri
 		fetchData();
 	}, [pageCurrent]);
 
-	console.log(content.comics);
-
 	return (
 		<div className="px-3 xl:px-[220px] lg:py-2">
 			<div className="flex items-center mt-12 mb-4 gap-x-3">
@@ -92,15 +90,13 @@ function ComicContentPart({ title, type, children }: { title: string; type: stri
 					{title} Comics - Page {pageCurrent}
 				</span>
 			</div>
-			{content.comics.length > 0 ? (
+			{comics ? (
 				<>
 					<div className="grid lg:grid-cols-5 md:grid-cols-4 sm:grid-cols-3 grid-cols-2 mt-4">
-						{content.comics.map((item) => {
+						{comics!.map((item) => {
 							return <ComicCard key={item.id} comic={item} />;
 						})}
 					</div>
-					<PaginationComic countPage={content.totalPage!} defaultPage={Number(pageCurrent)} />
-					<Footer />
 				</>
 			) : (
 				<ClipLoader

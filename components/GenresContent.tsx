@@ -5,6 +5,7 @@ import { twMerge } from "tailwind-merge";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+
 import { AiFillInfoCircle } from "react-icons/ai";
 import { useEffect, useState } from "react";
 import ComicCard from "./ComicCard";
@@ -13,7 +14,9 @@ import ClipLoader from "react-spinners/ClipLoader";
 import Footer from "./Footer";
 import axios from "axios";
 import { apiUrl } from "@/constant";
-
+import { useQuery } from "react-query";
+import { getAllGenres } from "@/actions/getAllGenres";
+import { getGenresComics } from "@/actions/getGenresComics";
 type Props = {
 	comics: Comic[];
 	totalPage: number | undefined;
@@ -25,41 +28,27 @@ function GenresContent() {
 		totalPage: undefined,
 	});
 
-	const [genres, setGenres] = useState<Genres[]>([]);
 	const searchParams = useSearchParams();
 	const type = searchParams.get("type");
-	const pageCurrent = searchParams.get("page") === null ? 1 : searchParams.get("page");
-	const indexCurrent = genres.findIndex((item) => item.id === type);
+	const pageCurrent = searchParams.get("page") === null ? "1" : searchParams.get("page");
+	// const [genres, setGenres] = useState<Genres[]>([]);
+	const { data: genres } = useQuery({
+		queryFn: () => getAllGenres(),
+		queryKey: ["genres"],
+	});
+
+	const { data } = useQuery({
+		queryFn: () => getGenresComics(pageCurrent!, type!),
+		queryKey: ["genresComic", pageCurrent, type],
+	});
+
+	const indexCurrent = genres && genres.findIndex((item) => item.id === type);
 	const router = useRouter();
-
-	useEffect(() => {
-		const fetchData = async () => {
-			const res = await axios.get(`${apiUrl}/genres`);
-			setGenres(res.data);
-		};
-		fetchData();
-	}, []);
-
-	useEffect(() => {
-		const fetchData = async () => {
-			const res = await axios.get(`${apiUrl}/genres/${type}`, {
-				params: {
-					page: pageCurrent,
-				},
-			});
-			setContent({
-				comics: res.data.comics,
-				totalPage: res.data.total_pages,
-			});
-		};
-		fetchData();
-	}, [type, pageCurrent]);
 
 	const handleClick = (id: string) => {
 		router.push("/genres?type=" + id);
 		router.refresh();
 	};
-
 	return (
 		<div className="flex w-full overflow-auto scrollbar px-3 flex-col xl:px-[124px] lg:py-2">
 			<Slider
@@ -95,28 +84,29 @@ function GenresContent() {
 						},
 					},
 				]}>
-				{genres.map((item: Genres) => {
-					return (
-						<div
-							key={item.id}
-							onClick={() => handleClick(item.id)}
-							className={twMerge(
-								`text-sm md:text-[16px] w-max h-full leading-[48px] text-center cursor-pointer genres-item select-none border-t border-b`,
-								type === item.id && `bg-emerald-500 text-white`
-							)}>
-							{item.name}
-						</div>
-					);
-				})}
+				{genres &&
+					genres!.map((item: Genres) => {
+						return (
+							<div
+								key={item.id}
+								onClick={() => handleClick(item.id)}
+								className={twMerge(
+									`text-sm md:text-[16px] w-max h-full leading-[48px] text-center cursor-pointer select-none border-t border-b line-clamp-1`,
+									type === item.id && `bg-emerald-500 text-white`
+								)}>
+								<p className="line-clamp-1 px-1">{item.name}</p>
+							</div>
+						);
+					})}
 			</Slider>
-			{content.comics.length > 0 ? (
+			{data?.comics && genres ? (
 				<>
 					<div className="flex items-center bg-[#0ea6e9] gap-x-4 px-4 py-3 rounded-md mt-5">
 						<AiFillInfoCircle className="w-6 h-6 flex-shrink-0" color="white" />
-						<span className="text-white">{genres[indexCurrent].description}</span>
+						<span className="text-white text-sm md:text-lg line-clamp-4">{genres![indexCurrent!].description}</span>
 					</div>
 					<div className="grid lg:grid-cols-5 md:grid-cols-4 sm:grid-cols-3 grid-cols-2 mt-4">
-						{content.comics.map((item) => {
+						{data.comics.map((item) => {
 							return <ComicCard key={item.id} comic={item} />;
 						})}
 					</div>

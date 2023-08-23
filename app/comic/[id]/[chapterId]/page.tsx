@@ -8,7 +8,6 @@ import { twMerge } from "tailwind-merge";
 import { usePathname, useRouter } from "next/navigation";
 import { IoClose } from "react-icons/io5";
 import { BeatLoader } from "react-spinners";
-import ScrollToTop from "@/components/ScrollToTop";
 import { BsArrowBarLeft, BsReplyAll } from "react-icons/bs";
 import { useStoreProivider } from "@/context/StoreProvider";
 import axios from "axios";
@@ -338,7 +337,6 @@ function Page({ params }: { params: any }) {
 					</ul>
 				</div>
 			</div>
-			<ScrollToTop />
 		</>
 	);
 }

@@ -2,6 +2,8 @@ import "./globals.css";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import StoreProvider from "@/context/StoreProvider";
+import QueryProvider from "@/context/QueryProvider";
+import ScrollToTop from "@/components/ScrollToTop";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -19,7 +21,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 				<link rel="icon" href="/logo.svg" sizes="any" />
 			</head>
 			<body className={inter.className}>
-				<StoreProvider>{children}</StoreProvider>
+				<QueryProvider>
+					<StoreProvider>{children}</StoreProvider>
+				</QueryProvider>
+				<ScrollToTop />
 			</body>
 		</html>
 	);

@@ -4,15 +4,15 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { IoMdSnow } from "react-icons/io";
 import { twMerge } from "tailwind-merge";
 import { BiComment } from "react-icons/bi";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Comic } from "@/types";
 import ComicCard from "./ComicCard";
 import PaginationComic from "./PaginationComic";
 import Footer from "./Footer";
 import { ClipLoader } from "react-spinners";
 import qs from "query-string";
-import { apiUrl } from "@/constant";
-import axios from "axios";
+import { useQuery } from "react-query";
+import { getTopComics } from "@/actions/getTopComics";
 
 type Props = {
 	comics: Comic[];
@@ -23,38 +23,13 @@ function TopContent() {
 	const searhParam = useSearchParams();
 	const tab = searhParam.get("tab") ? searhParam.get("tab") : "all";
 	const statusCurrent = searhParam.get("status") ? searhParam.get("status") : "all";
-	const pageCurrent = searhParam.get("page") ? searhParam.get("page") : 1;
+	const pageCurrent = searhParam.get("page") ? searhParam.get("page") : "1";
 	const router = useRouter();
-	const [content, setContent] = useState<Props>({
-		comics: [],
-		totalPage: undefined,
-	});
 
-	useEffect(() => {
-		const fetchData = async () => {
-			let res;
-			if (tab === "all") {
-				res = await axios.get(`${apiUrl}/top`, {
-					params: {
-						page: pageCurrent,
-						status: statusCurrent,
-					},
-				});
-			} else {
-				res = await axios.get(`${apiUrl}/top/${tab}`, {
-					params: {
-						page: pageCurrent,
-						status: statusCurrent,
-					},
-				});
-			}
-			setContent({
-				comics: res.data.comics,
-				totalPage: res.data.total_pages,
-			});
-		};
-		fetchData();
-	}, [tab, statusCurrent, pageCurrent]);
+	const { data } = useQuery({
+		queryFn: () => getTopComics(pageCurrent!, tab!, statusCurrent!),
+		queryKey: ["top", { pageCurrent, tab, statusCurrent }],
+	});
 
 	const url = usePathname();
 
@@ -142,15 +117,15 @@ function TopContent() {
 					Updating
 				</span>
 			</div>
-			{content.comics.length > 0 ? (
+			{data?.comics ? (
 				<>
 					<div className="grid lg:grid-cols-5 md:grid-cols-4 sm:grid-cols-3 grid-cols-2 mt-4">
-						{content.comics.map((item) => {
+						{data.comics.map((item) => {
 							return <ComicCard key={item.id} comic={item} />;
 						})}
 					</div>
 					<PaginationComic
-						countPage={content.totalPage!}
+						countPage={data.totalPage!}
 						defaultPage={Number(pageCurrent)}
 						top={{
 							tab: tab!,

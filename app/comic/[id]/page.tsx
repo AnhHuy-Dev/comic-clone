@@ -1,7 +1,6 @@
 "use client";
 import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
-import ScrollToTop from "@/components/ScrollToTop";
 import { apiUrl } from "@/constant";
 import { Chapter, ComicDetail } from "@/types";
 import axios from "axios";
@@ -28,7 +27,6 @@ function ComicPage({ params }: { params: any }) {
 			<Navbar />
 			<ComicPageContent comic={comic!} chapters={chapters} id={id} />
 			<Footer />
-			<ScrollToTop />
 		</>
 	);
 }

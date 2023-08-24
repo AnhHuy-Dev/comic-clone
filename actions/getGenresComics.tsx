@@ -9,14 +9,10 @@ export const getGenresComics = async (
 	comics: Comic[];
 	totalPage: number;
 }> => {
-	const res = await axios.get(`${apiUrl}/genres/${type}`, {
-		params: {
-			page: page,
-		},
+	const res = await fetch(`${apiUrl}/genres/${type}?page=${page}`, { cache: "force-cache" });
+	const result = res.json().then((data) => {
+		return data;
 	});
 
-	return {
-		comics: res.data.comics,
-		totalPage: res.data.total_pages,
-	};
+	return result;
 };

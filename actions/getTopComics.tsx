@@ -11,24 +11,16 @@ export const getTopComics = async (
 	totalPage: number;
 }> => {
 	let res;
+
 	if (tab === "all") {
-		res = await axios.get(`${apiUrl}/top`, {
-			params: {
-				page: page,
-				status: status,
-			},
-		});
+		res = await fetch(`${apiUrl}/top?page=${page}&status=${status}`, { cache: "force-cache" });
 	} else {
-		res = await axios.get(`${apiUrl}/top/${tab}`, {
-			params: {
-				page: page,
-				status: status,
-			},
-		});
+		res = await fetch(`${apiUrl}/top/${tab}?page=${page}&status=${status}`, { cache: "force-cache" });
 	}
 
-	return {
-		comics: res.data.comics,
-		totalPage: res.data.total_pages,
-	};
+	const result = res.json().then((data) => {
+		return data;
+	});
+
+	return result;
 };

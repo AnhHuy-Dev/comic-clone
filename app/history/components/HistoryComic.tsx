@@ -27,6 +27,7 @@ function HistoryComic() {
 		setComicsRender(comicItems.slice(5 * (Number(pageCurrent) - 1), 5 * Number(pageCurrent)));
 	}, [pageCurrent, router, comicItems.length]);
 
+	const comicsReverse = [...comicsRender].reverse();
 	return (
 		<div className="px-3 xl:px-[220px] lg:py-2">
 			<div className="flex items-center mt-12 mb-4 gap-x-3">
@@ -37,7 +38,7 @@ function HistoryComic() {
 			<div className="grid lg:grid-cols-5 md:grid-cols-4 sm:grid-cols-3 grid-cols-2 mt-4">
 				{comicItems &&
 					comicItems.length > 0 &&
-					comicsRender.map((item, index) => {
+					comicsReverse.map((item, index) => {
 						return (
 							<div key={index} className="swiper-slide w-[242px] px-1 py-1" data-swiper-slide-index="4">
 								<div className="overflow-hidden rounded-md duration-500 border-2 border-transparent md:hover:border-emerald-300 relative group md:group-hover:shadow-md cursor-pointer">

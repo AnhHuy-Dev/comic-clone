@@ -3,7 +3,10 @@ import { Comic, Genres } from "@/types";
 import axios from "axios";
 
 export const getAllGenres = async (): Promise<Genres[]> => {
-	const res = await axios.get(`${apiUrl}/genres`);
+	const res = await fetch(`${apiUrl}/genres`, { cache: "force-cache" });
+	const result = res.json().then((data) => {
+		return data;
+	});
 
-	return res.data;
+	return result;
 };

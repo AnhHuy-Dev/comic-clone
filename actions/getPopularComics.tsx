@@ -8,14 +8,11 @@ export const getPopularComics = async (
 	comics: Comic[];
 	totalPage: number;
 }> => {
-	const res = await axios.get(`${apiUrl}/trending-comics`, {
-		params: {
-			page: page,
-		},
+	const res = await fetch(`${apiUrl}/trending-comics?page=${page}`);
+
+	const result = res.json().then((data) => {
+		return data;
 	});
 
-	return {
-		comics: res.data.comics,
-		totalPage: res.data.total_pages,
-	};
+	return result;
 };

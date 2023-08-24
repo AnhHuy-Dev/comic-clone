@@ -1,6 +1,5 @@
 "use client";
 
-import { getPopularComics } from "@/actions/getPopularComics";
 import { getRecentlyComic } from "@/actions/getRecentlyComic";
 import ComicContentPart from "@/components/ComicContentPart";
 import Footer from "@/components/Footer";

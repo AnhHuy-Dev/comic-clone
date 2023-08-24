@@ -7,7 +7,7 @@ export const getRecentlyComic = async (
 	comics: Comic[];
 	total_pages: number;
 }> => {
-	const res = await fetch(`${apiUrl}/recent-update-comics?page=${page}`);
+	const res = await fetch(`${apiUrl}/recent-update-comics?page=${page}`, { cache: "force-cache" });
 
 	const result = res.json().then((data) => {
 		return data;

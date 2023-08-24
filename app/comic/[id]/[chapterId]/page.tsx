@@ -112,13 +112,14 @@ function Page({ params }: { params: any }) {
 			last_reading: chapter.chapter_name,
 			status: comic.status!,
 		});
-	}, [params]);
+	}, [params, comic, chapter]);
 
 	useEffect(() => {
 		window.addEventListener("scroll", handleScrollImage);
 
 		return () => window.removeEventListener("scroll", handleScrollImage);
 	}, []);
+	3;
 
 	return (
 		<>

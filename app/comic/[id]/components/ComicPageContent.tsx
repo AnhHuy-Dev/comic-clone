@@ -30,7 +30,7 @@ function ComicPageContent({ comic, chapters, id }: { comic: ComicDetail; chapter
 	return (
 		<div className="relative pt-12 px-4 min-h-screen">
 			<div className="absolute top-0 inset-x-0 h-80 bg-gradient-to-b from-emerald-100 -z-10"></div>
-			{comic ? (
+			{comic && (
 				<>
 					<div className="max-w-5xl mx-auto border-4 border-transparent p-0 rounded-xl sm:grid sm:grid-cols-4 gap-6 md:p-4 md:border-white">
 						<div className="aspect-[2/3] w-56 mx-auto sm:w-full rounded-lg border-2 overflow-hidden border-emerald-500 relative sm:col-span-1">
@@ -108,17 +108,6 @@ function ComicPageContent({ comic, chapters, id }: { comic: ComicDetail; chapter
 						</div>
 					</div>
 				</>
-			) : (
-				<ClipLoader
-					cssOverride={{
-						position: "fixed",
-						top: "50%",
-						left: "50%",
-						width: "50px",
-						height: "50px",
-						borderWidth: "4px",
-					}}
-				/>
 			)}
 		</div>
 	);

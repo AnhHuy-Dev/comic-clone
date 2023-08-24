@@ -7,6 +7,7 @@ import { Chapter, ComicDetail } from "@/types";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useQuery } from "react-query";
+import { ClipLoader } from "react-spinners";
 import ComicPageContent from "./components/ComicPageContent";
 
 function ComicPage({ params }: { params: any }) {
@@ -24,11 +25,22 @@ function ComicPage({ params }: { params: any }) {
 	return (
 		<>
 			<Navbar />
-			{comics && chapters && (
+			{comics && chapters ? (
 				<>
 					<ComicPageContent comic={comics} chapters={chapters} id={id} />
 					<Footer />
 				</>
+			) : (
+				<ClipLoader
+					cssOverride={{
+						position: "fixed",
+						top: "50%",
+						left: "50%",
+						width: "50px",
+						height: "50px",
+						borderWidth: "4px",
+					}}
+				/>
 			)}
 		</>
 	);

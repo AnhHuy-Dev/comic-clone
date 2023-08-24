@@ -1,6 +1,6 @@
 "use client";
 
-import { ChangeEvent, useEffect, useState } from "react";
+import { ChangeEvent, use, useEffect, useState } from "react";
 import { BiCommentDetail } from "react-icons/bi";
 import { AiOutlineDownload, AiOutlineLike } from "react-icons/ai";
 import { Comment } from "@/types";
@@ -85,6 +85,7 @@ function Page({ params }: { params: any }) {
 
 	const handleScrollImage = () => {
 		const elements = document.querySelectorAll(".image-source");
+
 		const foundE = Array.from(elements).find((item) => {
 			const rect = item.getBoundingClientRect();
 			return rect.top > 0;
@@ -111,11 +112,13 @@ function Page({ params }: { params: any }) {
 			last_reading: chapter.chapter_name,
 			status: comic.status!,
 		});
+	}, [params]);
 
+	useEffect(() => {
 		window.addEventListener("scroll", handleScrollImage);
 
 		return () => window.removeEventListener("scroll", handleScrollImage);
-	}, [params]);
+	}, []);
 
 	return (
 		<>

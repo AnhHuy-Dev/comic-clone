@@ -125,7 +125,7 @@ function TopContent() {
 						})}
 					</div>
 					<PaginationComic
-						countPage={data.totalPage!}
+						countPage={data.total_pages!}
 						defaultPage={Number(pageCurrent)}
 						top={{
 							tab: tab!,

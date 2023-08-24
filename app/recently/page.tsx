@@ -25,7 +25,7 @@ function Recently() {
 			</ComicContentPart>
 			{!isLoading && (
 				<>
-					<PaginationComic countPage={data?.totalPage!} defaultPage={Number(pageCurrent)} />
+					<PaginationComic countPage={data?.total_pages!} defaultPage={Number(pageCurrent)} />
 					<Footer />
 				</>
 			)}

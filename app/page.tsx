@@ -10,59 +10,70 @@ import { Comic } from "@/types";
 import axios from "axios";
 import { apiUrl } from "../constant";
 import { useQuery } from "react-query";
-import { getTrendingComic } from "@/actions/getTrendingComic";
+import { getPopularComics } from "@/actions/getPopularComics";
+import { getCompletedComics } from "@/actions/getCompletedComics";
+import { getRecentlyComic } from "@/actions/getRecentlyComic";
+import { getBoyComics } from "@/actions/getBoyComics";
+import { getGirlComics } from "@/actions/getGirlComics";
 export default function Home() {
 	const { data: trendingComics } = useQuery({
-		queryFn: () => getTrendingComic(),
-		queryKey: ["trending"],
-		staleTime: Infinity,
+		queryFn: () => getCompletedComics("1"),
+		queryKey: ["completed-home"],
 	});
-	const [popularComics, setPopularComics] = useState<Comic[]>();
-	const [completedComics, setCompletedComics] = useState<Comic[]>();
-	const [recentlyComics, setRecentlyComics] = useState<Comic[]>();
-	const [boyComics, setBoyComics] = useState<Comic[]>();
-	const [girlComics, setGirlComics] = useState<Comic[]>();
+	const { data: popularComics } = useQuery({
+		queryFn: () => getPopularComics("1"),
+		queryKey: ["trending-home"],
+	});
+	const { data: completedComics } = useQuery({
+		queryFn: () => getCompletedComics("1"),
+		queryKey: ["completed-home"],
+	});
+	const { data: recentlyComics } = useQuery({
+		queryFn: () => getRecentlyComic("1"),
+		queryKey: ["recently-home"],
+	});
+	const { data: boyComics } = useQuery({
+		queryFn: () => getBoyComics("1"),
+		queryKey: ["boy-home"],
+	});
+	const { data: girlComics } = useQuery({
+		queryFn: () => getGirlComics("1"),
+		queryKey: ["girl-home"],
+	});
 
-	useEffect(() => {
-		const fetchData = async () => {
-			const popularRes = await axios.get(`${apiUrl}/recommend-comics`);
-			setPopularComics(popularRes.data);
-
-			const completedRes = await axios.get(`${apiUrl}/completed-comics`);
-			setCompletedComics(completedRes.data.comics);
-
-			const recentlyRes = await axios.get(`${apiUrl}/recent-update-comics`);
-			setRecentlyComics(recentlyRes.data.comics);
-
-			const boyRes = await axios.get(`${apiUrl}/boy-comics`);
-			setBoyComics(boyRes.data.comics);
-
-			const girlRes = await axios.get(`${apiUrl}/girl-comics`);
-			setGirlComics(girlRes.data.comics);
-		};
-		fetchData();
-	}, []);
 	return (
 		<>
 			<Navbar />
 			{/* {isLoading && <div>Loading...</div>} */}
-			<ComicContent comics={trendingComics!} trending={true} />
-			<ComicContent popular={true} comics={popularComics!} title="popular">
-				<BsFire className="w-6 h-6 lg:w-8 lg:h-8" color="#10b982" />
-			</ComicContent>
-			<ComicContent comics={completedComics!} title="completed">
-				<BsFillPatchCheckFill className="w-6 h-6 lg:w-8 lg:h-8" color="#10b982" />
-			</ComicContent>
-			<ComicContent comics={recentlyComics!} title="recently">
-				<BiTimeFive className="w-8 h-8 lg:w-10 lg:h-10" color="#10b982" />
-			</ComicContent>
-			<ComicContent comics={boyComics!} title="boy">
-				<BoyIcon className="w-8 h-8 lg:w-8 lg:h-8 text-[#10b982]" />
-			</ComicContent>
-			<ComicContent comics={girlComics!} title="girl">
-				<GirlIcon className="w-8 h-8 lg:w-8 lg:h-8 text-[#10b982]" />
-			</ComicContent>
-			<Footer />
+			{trendingComics && <ComicContent comics={trendingComics!.comics} trending={true} />}
+			{popularComics && (
+				<ComicContent popular={true} comics={popularComics!.comics} title="popular">
+					<BsFire className="w-6 h-6 lg:w-8 lg:h-8" color="#10b982" />
+				</ComicContent>
+			)}
+			{completedComics && (
+				<ComicContent comics={completedComics!.comics} title="completed">
+					<BsFillPatchCheckFill className="w-6 h-6 lg:w-8 lg:h-8" color="#10b982" />
+				</ComicContent>
+			)}
+			{recentlyComics && (
+				<ComicContent comics={recentlyComics!.comics} title="recently">
+					<BiTimeFive className="w-8 h-8 lg:w-10 lg:h-10" color="#10b982" />
+				</ComicContent>
+			)}
+			{boyComics && (
+				<ComicContent comics={boyComics!.comics} title="boy">
+					<BoyIcon className="w-8 h-8 lg:w-8 lg:h-8 text-[#10b982]" />
+				</ComicContent>
+			)}
+			{girlComics && (
+				<>
+					<ComicContent comics={girlComics!.comics} title="girl">
+						<GirlIcon className="w-8 h-8 lg:w-8 lg:h-8 text-[#10b982]" />
+					</ComicContent>
+					<Footer />
+				</>
+			)}
 		</>
 	);
 }

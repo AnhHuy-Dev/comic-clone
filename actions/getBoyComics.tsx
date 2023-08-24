@@ -1,12 +1,11 @@
 import { apiUrl } from "@/constant";
 import { Comic } from "@/types";
-import axios from "axios";
 
 export const getBoyComics = async (
 	page: string
 ): Promise<{
 	comics: Comic[];
-	totalPage: number;
+	total_pages: number;
 }> => {
 	const res = await fetch(`${apiUrl}/boy-comics?page=${page}`);
 

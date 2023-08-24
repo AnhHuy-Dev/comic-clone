@@ -39,8 +39,10 @@ function GenresContent() {
 
 	const { data } = useQuery({
 		queryFn: () => getGenresComics(pageCurrent!, type!),
-		queryKey: ["genresComic", pageCurrent, type],
+		queryKey: ["genresComic", { pageCurrent, type }],
 	});
+
+	console.log(data);
 
 	const indexCurrent = genres && genres.findIndex((item) => item.id === type);
 	const router = useRouter();
@@ -110,7 +112,7 @@ function GenresContent() {
 							return <ComicCard key={item.id} comic={item} />;
 						})}
 					</div>
-					<PaginationComic countPage={content.totalPage!} defaultPage={Number(pageCurrent)} type={type!} />
+					<PaginationComic countPage={data?.total_pages} defaultPage={Number(pageCurrent)} type={type!} />
 					<Footer />
 				</>
 			) : (

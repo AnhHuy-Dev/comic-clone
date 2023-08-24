@@ -1,6 +1,5 @@
 import { apiUrl } from "@/constant";
 import { Comic } from "@/types";
-import axios from "axios";
 
 export const getTopComics = async (
 	page: string,
@@ -8,7 +7,7 @@ export const getTopComics = async (
 	status: string
 ): Promise<{
 	comics: Comic[];
-	totalPage: number;
+	total_pages: number;
 }> => {
 	let res;
 

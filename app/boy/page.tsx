@@ -19,7 +19,7 @@ function Boy() {
 	return (
 		<>
 			<Navbar />
-			<ComicContentPart title="Boy" type="boy" comics={data?.comics}>
+			<ComicContentPart title="Boy" comics={data?.comics}>
 				<BoyIcon className="text-emerald-500 w-7 h-7" />
 			</ComicContentPart>
 			{!isLoading && (

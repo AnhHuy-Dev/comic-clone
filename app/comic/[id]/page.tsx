@@ -1,32 +1,35 @@
 "use client";
+import { getChapterComic, getComicDetail } from "@/actions/getComicDetail";
 import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
 import { apiUrl } from "@/constant";
 import { Chapter, ComicDetail } from "@/types";
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { useQuery } from "react-query";
 import ComicPageContent from "./components/ComicPageContent";
 
 function ComicPage({ params }: { params: any }) {
-	const [comic, setComic] = useState<ComicDetail>();
-	const [chapters, setChapters] = useState<Chapter[]>([]);
 	const { id } = params;
 
-	useEffect(() => {
-		const fetchData = async () => {
-			const resComics = await axios.get(`${apiUrl}/comics/${id}`);
-			const resComicsChapter = await axios.get(`${apiUrl}/comics/${id}/chapters`);
-			setComic(resComics.data);
-			setChapters([...resComicsChapter.data.reverse()]);
-		};
-		fetchData();
-	}, [id]);
+	const { data: comics } = useQuery({
+		queryFn: () => getComicDetail(id),
+		queryKey: ["comic-detail", { id }],
+	});
+	const { data: chapters } = useQuery({
+		queryFn: () => getChapterComic(id),
+		queryKey: ["all-chapters", { id }],
+	});
 
 	return (
 		<>
 			<Navbar />
-			<ComicPageContent comic={comic!} chapters={chapters} id={id} />
-			<Footer />
+			{comics && chapters && (
+				<>
+					<ComicPageContent comic={comics} chapters={chapters} id={id} />
+					<Footer />
+				</>
+			)}
 		</>
 	);
 }

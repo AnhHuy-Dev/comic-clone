@@ -17,13 +17,13 @@ function ComicPageContent({ comic, chapters, id }: { comic: ComicDetail; chapter
 	const router = useRouter();
 	const url = usePathname();
 	const { comicItems } = useStoreProivider();
-
+	const reverseChapters = [...chapters].reverse();
 	const handleReadNow = () => {
 		const index = comicItems.findIndex((item) => item.id === id);
 		if (index !== -1) {
 			router.push(`${url}/${comicItems[index].chapter_id}`);
 		} else {
-			router.push(`${url}/${chapters[0].id}`);
+			router.push(`${url}/${reverseChapters[0].id}`);
 		}
 	};
 
@@ -104,7 +104,7 @@ function ComicPageContent({ comic, chapters, id }: { comic: ComicDetail; chapter
 							</div>
 						</div>
 						<div className="mt-4">
-							<ChapterPage chapters={chapters} />{" "}
+							<ChapterPage chapters={reverseChapters} />{" "}
 						</div>
 					</div>
 				</>

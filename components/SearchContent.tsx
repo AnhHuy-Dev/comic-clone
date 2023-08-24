@@ -3,14 +3,13 @@
 import { Comic, Genres } from "@/types";
 import { AiOutlineRight } from "react-icons/ai";
 import { useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
 import { PiSpinnerBold } from "react-icons/pi";
 import { ClipLoader } from "react-spinners";
 import Footer from "./Footer";
 import PaginationComic from "./PaginationComic";
 import Link from "next/link";
-import axios from "axios";
-import { apiUrl } from "@/constant";
+import { useQuery } from "react-query";
+import { getAllSearch } from "@/actions/getAllSearch";
 
 type Props = {
 	comics: Comic[];
@@ -20,31 +19,13 @@ type Props = {
 function SearchContent() {
 	const searchParam = useSearchParams();
 	const title = searchParam.get("title");
-	const [isLoading, setIsLoading] = useState(false);
-	const [content, setContent] = useState<Props>({
-		comics: [],
-		totalPage: undefined,
+	const pageCurrent = searchParam.get("page") ? searchParam.get("page") : "1";
+
+	const { data, isLoading } = useQuery({
+		queryFn: () => getAllSearch(pageCurrent!, title!),
+		queryKey: ["search-all", { pageCurrent, title }],
+		enabled: title !== "",
 	});
-
-	const pageCurrent = searchParam.get("page") ? searchParam.get("page") : 1;
-
-	useEffect(() => {
-		const fetchData = async () => {
-			setIsLoading(true);
-			const res = await axios.get(`${apiUrl}/search`, {
-				params: {
-					q: title,
-					page: pageCurrent,
-				},
-			});
-			setContent({
-				comics: res.data.comics,
-				totalPage: res.data.total_pages,
-			});
-			setIsLoading(false);
-		};
-		fetchData();
-	}, [title, pageCurrent]);
 
 	return (
 		<div className="max-w-6xl mx-auto min-h-screen py-6 px-3">
@@ -67,10 +48,10 @@ function SearchContent() {
 					}}
 				/>
 			)}
-			{!isLoading && content.comics.length > 0 ? (
+			{data && (
 				<>
 					<div className="grid grid-cols-1 md:grid-cols-2 gap-6 py-5">
-						{content.comics.map((item: any, index: number) => {
+						{data.comics.map((item: any, index: number) => {
 							return (
 								<div key={index} className="flex flex-col sm:flex-row gap-4 rounded-lg border border-gray-100 bg-gray-50 p-4 my-2">
 									<img src={item?.thumbnail} className="rounded aspect-[2/3] w-44 mx-auto sm:w-auto sm:h-36 border border-emerald-500 object-cover" alt={item?.title} />
@@ -104,15 +85,15 @@ function SearchContent() {
 							);
 						})}
 					</div>
-					<PaginationComic countPage={content.totalPage!} title={title!} defaultPage={Number(pageCurrent)} />
-					<Footer />
-				</>
-			) : (
-				<>
-					{!isLoading && (
+					{data?.comics.length === 0 ? (
 						<div className="mt-8 text-center font-bold text-lg">
 							<h1>Not find any comics</h1>
 						</div>
+					) : (
+						<>
+							<PaginationComic countPage={data.total_pages!} title={title!} defaultPage={Number(pageCurrent)} />
+							<Footer />
+						</>
 					)}
 				</>
 			)}

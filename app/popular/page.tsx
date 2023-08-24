@@ -7,6 +7,7 @@ import PaginationComic from "@/components/PaginationComic";
 import { useSearchParams } from "next/navigation";
 import { BsFire } from "react-icons/bs";
 import { useQuery } from "react-query";
+import { ClipLoader } from "react-spinners";
 
 function Popular() {
 	const searchParam = useSearchParams();
@@ -19,9 +20,21 @@ function Popular() {
 	return (
 		<>
 			<Navbar />
-			<ComicContentPart title="Popular" type="popular" comics={data?.comics}>
+			<ComicContentPart title="Popular" comics={data?.comics}>
 				<BsFire className="w-7 h-7" color="#10B981" />
 			</ComicContentPart>
+			{isLoading && (
+				<ClipLoader
+					cssOverride={{
+						position: "fixed",
+						top: "50%",
+						left: "50%",
+						width: "50px",
+						height: "50px",
+						borderWidth: "4px",
+					}}
+				/>
+			)}
 			{!isLoading && (
 				<>
 					<PaginationComic countPage={data?.total_pages!} defaultPage={Number(pageCurrent)} />

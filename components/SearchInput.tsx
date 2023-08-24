@@ -1,14 +1,13 @@
 "use client";
 
 import useDebounce from "@/hooks/useDebounce";
-import { Comic } from "@/types";
-import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import { HiMagnifyingGlass } from "react-icons/hi2";
 import { twMerge } from "tailwind-merge";
 import MediaComic from "./MediaComic";
 import { useRouter } from "next/navigation";
-import axios from "axios";
-import { apiUrl } from "@/constant";
+import { useQuery } from "react-query";
+import { getSearchSuggest } from "@/actions/getSearchSuggest";
 
 type Props = {
 	className?: string;
@@ -17,22 +16,15 @@ type Props = {
 
 function SearchInput({ className, setShow }: Props) {
 	const [value, setValue] = useState<string>("");
-	const [searchComics, setSearchComics] = useState<Comic[]>([]);
 	const debounceValue = useDebounce(value, 500);
 	const router = useRouter();
 	const [isFocused, setIsFocused] = useState(false);
 
-	useEffect(() => {
-		const fetchData = async () => {
-			const res = await axios.get(`${apiUrl}/search-suggest`, {
-				params: {
-					q: value,
-				},
-			});
-			setSearchComics(res.data);
-		};
-		if (value !== "") fetchData();
-	}, [debounceValue]);
+	const { data } = useQuery({
+		queryFn: () => getSearchSuggest(debounceValue),
+		queryKey: ["search-suggess", { debounceValue }],
+		enabled: debounceValue !== "",
+	});
 
 	const handleSearch = () => {
 		if (value === "") return;
@@ -63,16 +55,22 @@ function SearchInput({ className, setShow }: Props) {
 				<HiMagnifyingGlass className="w-5 h-5 relative top-[2px]" onClick={() => handleSearch()} />
 			</div>
 
-			{searchComics.length > 0 && value !== "" && (
-				<div
-					className={twMerge(
-						`absolute top-[120%] right-0 border shadow-md w-full lg:w-[150%] max-h-[400px] h-[315px] overflow-y-scroll overflow-x-hidden rounded-lg search-menu z-10 bg-white`,
-						!isFocused && "hidden"
-					)}>
-					{searchComics.map((item, index) => {
-						return <MediaComic key={index} comic={item} />;
-					})}
-				</div>
+			{data && value !== "" && (
+				<>
+					{data.length === 0 ? (
+						<div></div>
+					) : (
+						<div
+							className={twMerge(
+								`absolute top-[120%] right-0 border shadow-md w-full lg:w-[150%] max-h-[400px] h-[315px] overflow-y-scroll overflow-x-hidden rounded-lg search-menu z-10 bg-white`,
+								!isFocused && "hidden"
+							)}>
+							{data.map((item, index) => {
+								return <MediaComic key={index} comic={item} />;
+							})}
+						</div>
+					)}
+				</>
 			)}
 		</div>
 	);

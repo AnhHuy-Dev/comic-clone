@@ -7,6 +7,7 @@ import PaginationComic from "@/components/PaginationComic";
 import { useSearchParams } from "next/navigation";
 import { BsFillPatchCheckFill } from "react-icons/bs";
 import { useQuery } from "react-query";
+import { ClipLoader } from "react-spinners";
 function Completed() {
 	const searchParam = useSearchParams();
 	const pageCurrent = searchParam.get("page") ? searchParam.get("page") : "1";
@@ -18,9 +19,21 @@ function Completed() {
 	return (
 		<>
 			<Navbar />
-			<ComicContentPart title="Completed" type="completed" comics={data?.comics}>
+			<ComicContentPart title="Completed" comics={data?.comics}>
 				<BsFillPatchCheckFill className="w-7 h-7" color="#10B981" />
 			</ComicContentPart>
+			{isLoading && (
+				<ClipLoader
+					cssOverride={{
+						position: "fixed",
+						top: "50%",
+						left: "50%",
+						width: "50px",
+						height: "50px",
+						borderWidth: "4px",
+					}}
+				/>
+			)}
 			{!isLoading && (
 				<>
 					<PaginationComic countPage={data?.total_pages!} defaultPage={Number(pageCurrent)} />

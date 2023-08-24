@@ -3,27 +3,15 @@
 import { ChangeEvent, useEffect, useState } from "react";
 import { BiCommentDetail } from "react-icons/bi";
 import { AiOutlineDownload, AiOutlineLike } from "react-icons/ai";
-import { Chapter, ComicDetail, Comment } from "@/types";
+import { Comment } from "@/types";
 import { twMerge } from "tailwind-merge";
 import { usePathname, useRouter } from "next/navigation";
 import { IoClose } from "react-icons/io5";
 import { BeatLoader } from "react-spinners";
 import { BsArrowBarLeft, BsReplyAll } from "react-icons/bs";
 import { useStoreProivider } from "@/context/StoreProvider";
-import axios from "axios";
-import { apiUrl } from "@/constant";
-
-type Props = {
-	allChapters: Chapter[];
-	comicName: string | undefined;
-	imageComics: {
-		page: number;
-		backup_url_1: string;
-		backup_url_2: string;
-		src: string;
-	}[];
-	chapterName: string | undefined;
-};
+import { useQuery } from "react-query";
+import { getChapterDetail, getComicDetail } from "@/actions/getComicDetail";
 
 type CommentProps = {
 	listComments: Comment[];
@@ -34,13 +22,6 @@ type CommentProps = {
 function Page({ params }: { params: any }) {
 	const { addComic } = useStoreProivider();
 
-	const [content, setContent] = useState<Props>({
-		allChapters: [],
-		comicName: undefined,
-		imageComics: [],
-		chapterName: undefined,
-	});
-	const [comic, setComic] = useState<ComicDetail>();
 	const [comments, setComments] = useState<CommentProps>({
 		listComments: [],
 		pageComment: 1,
@@ -58,20 +39,29 @@ function Page({ params }: { params: any }) {
 	const handleChangeChapter = (chap: number): void => {
 		router.push(`${urlCurrent}/${chap.toString()}`);
 	};
+	const { data: chapter } = useQuery({
+		queryFn: () => getChapterDetail(params.id, params.chapterId),
+		queryKey: ["chapter-detail", params.id, params.chapterId],
+	});
+	const { data: comic } = useQuery({
+		queryFn: () => getComicDetail(params.id),
+		queryKey: ["chapter-detail-comic", params.id],
+	});
 
-	const reverseChapters = [...content.allChapters].reverse();
-	const chapCurrent = reverseChapters.findIndex((item) => item.id == params.chapterId);
+	const reverseChapters = chapter && [...chapter?.chapters].reverse();
+	const chapCurrent = reverseChapters && reverseChapters?.findIndex((item) => item.id == params.chapterId);
 
 	const handleChangeChapCurrent = (type: string) => {
 		if (type === "prev") {
 			if (chapCurrent === 0) return;
 
-			const id = reverseChapters[chapCurrent - 1].id;
-			router.push(`${urlCurrent}${id.toString()}`);
+			const id = reverseChapters && reverseChapters[chapCurrent! - 1].id;
+			router.push(`${urlCurrent}${id!.toString()}`);
 		} else {
-			if (chapCurrent === content.allChapters.length - 1) return;
+			if (!chapter) return;
+			if (chapCurrent === chapter.chapters.length - 1) return;
 
-			const id = reverseChapters[chapCurrent + 1].id;
+			const id = reverseChapters![chapCurrent! + 1].id;
 			router.push(`${urlCurrent}${id.toString()}`);
 		}
 	};
@@ -109,59 +99,23 @@ function Page({ params }: { params: any }) {
 	};
 
 	useEffect(() => {
-		// getSingleChapterComic(params.id, params.chapterId).then((data1) => {
-		// 	getDetailComic(params.id).then((resComic.data) => {
-		// 		addComic({
-		// 			id: data2.id,
-		// 			title: data2.title,
-		// 			authors: data2.authors,
-		// 			chapter_id: params.chapterId,
-		// 			reading_at: new Date().getTime(),
-		// 			thumbnail: data2.thumbnail,
-		// 			is_adult: data2.is_adult,
-		// 			last_reading: data1.chapter_name!,
-		// 			status: data2.status!,
-		// 		});
-		// 		setComic(data2);
-		// 	});
-		// 	setContent({
-		// 		allChapters: data1.chapters,
-		// 		comicName: data1.comic_name,
-		// 		imageComics: data1.images,
-		// 		chapterName: data1.chapter_name,
-		// 	});
-		// });
-
-		const fetchData = async () => {
-			const resComic = await axios.get(`${apiUrl}/comics/${params.id}`);
-			const resChapter = await axios.get(`${apiUrl}/comics/${params.id}/chapters/${params.chapterId}`);
-			addComic({
-				id: resComic.data.id,
-				title: resComic.data.title,
-				authors: resComic.data.authors,
-				chapter_id: params.chapterId,
-				reading_at: new Date().getTime(),
-				thumbnail: resComic.data.thumbnail,
-				is_adult: resComic.data.is_adult,
-				last_reading: resChapter.data.chapter_name!,
-				status: resComic.data.status!,
-			});
-			setComic(resComic.data);
-			setContent({
-				allChapters: resChapter.data.chapters,
-				comicName: resChapter.data.comic_name,
-				imageComics: resChapter.data.images,
-				chapterName: resChapter.data.chapter_name,
-			});
-		};
-		fetchData();
+		if (!comic || !chapter) return;
+		addComic({
+			id: comic.id,
+			title: comic.title,
+			authors: comic.authors,
+			chapter_id: params.chapterId,
+			reading_at: new Date().getTime(),
+			thumbnail: comic.thumbnail,
+			is_adult: comic.is_adult,
+			last_reading: chapter.chapter_name,
+			status: comic.status!,
+		});
 
 		window.addEventListener("scroll", handleScrollImage);
 
 		return () => window.removeEventListener("scroll", handleScrollImage);
 	}, [params]);
-
-	console.log(content);
 
 	return (
 		<>
@@ -173,7 +127,7 @@ function Page({ params }: { params: any }) {
 				}}>
 				<div className={twMerge(`fixed bg-black w-full text-white py-4 transition-all duration-300 shadow-2xl flex items-center z-10`, !showNav && `translate-y-[-100%]`)}>
 					<BsArrowBarLeft color="white" className="ml-4 md:ml-10 cursor-pointer" size={30} onClick={() => router.push(urlCurrent)} />
-					<h1 className="text-center w-full text-sm">{content.chapterName ? `${content.comicName} - ${content.chapterName}` : "Loading..."}</h1>
+					<h1 className="text-center w-full text-sm">{chapter?.chapter_name ? `${chapter.comic_name} - ${chapter.chapter_name}` : "Loading..."}</h1>
 				</div>
 				<div
 					className="flex flex-col max-w-2xl mx-auto bg-black/70"
@@ -181,9 +135,10 @@ function Page({ params }: { params: any }) {
 						setShowNav(!showNav);
 						setShowEpisode(false);
 					}}>
-					{content.imageComics.map((item, index) => {
-						return <img key={item.page} id={item.page.toString()} className="image-source" src={item.src} alt="" />;
-					})}
+					{chapter &&
+						chapter.images.map((item, index) => {
+							return <img key={item.page} id={item.page.toString()} className="image-source" src={item.src} alt="" />;
+						})}
 				</div>
 				<>
 					{showComment && <div className="fixed inset-0 bg-black/80 w-[100vw] h-[100vh] z-20 " onClick={() => setShowComment(false)}></div>}
@@ -300,8 +255,12 @@ function Page({ params }: { params: any }) {
 					<span className="hidden lg:block text-gray-400">|</span>
 					<ul className="flex gap-x-6 text-white justify-center text-sm md:mt-0 relative cursor-pointer items-center">
 						<li className="hidden lg:flex lg:items-center lg:gap-x-8">
-							<span className="w-20">{`${imageCurrent} / ${content.imageComics.length}`}</span>
-							<input type="range" min={1} max={content.imageComics.length} value={imageCurrent} className="progress" onChange={(e) => handleChangeImage(e)} />
+							{chapter && (
+								<>
+									<span className="w-20">{`${imageCurrent} / ${chapter.images.length}`}</span>
+									<input type="range" min={1} max={chapter.images.length} value={imageCurrent} className="progress" onChange={(e) => handleChangeImage(e)} />
+								</>
+							)}
 						</li>
 						<li className="px-3 py-1 rounded-full bg-gray-200 text-gray-500" onClick={() => handleChangeChapCurrent("prev")}>
 							Previous
@@ -319,19 +278,20 @@ function Page({ params }: { params: any }) {
 						flex flex-col rounded-md py-3 items-start scale-[0.0001] lg:translate-x-[100%] origin-bottom duration-300 transition-alll`,
 								showEspisode && `scale-100`
 							)}>
-							<p className="text-lg px-4">All Espisodes ({content.allChapters.length})</p>
+							<p className="text-lg px-4">All Espisodes ({chapter && chapter.chapters.length})</p>
 							<ul className="overflow-y-scroll overflow-x-hidden text-sm h-max max-h-72 font-normal episode-scroll w-[250px] md:w-[300px] flex flex-col-reverse items-start">
-								{reverseChapters.map((item, index) => {
-									return (
-										<li
-											id={`chapter-${item.id.toString()}`}
-											key={`chapter-${item.id.toString()}`}
-											onClick={() => handleChangeChapter(item.id)}
-											className={twMerge(`px-4 py-5 hover:underline cursor-pointer text-white truncate block`, item.id == params.chapterId && `text-emerald-500`)}>
-											{item.name}
-										</li>
-									);
-								})}
+								{reverseChapters &&
+									reverseChapters.map((item, index) => {
+										return (
+											<li
+												id={`chapter-${item.id.toString()}`}
+												key={`chapter-${item.id.toString()}`}
+												onClick={() => handleChangeChapter(item.id)}
+												className={twMerge(`px-4 py-5 hover:underline cursor-pointer text-white truncate block`, item.id == params.chapterId && `text-emerald-500`)}>
+												{item.name}
+											</li>
+										);
+									})}
 							</ul>
 						</div>
 					</ul>

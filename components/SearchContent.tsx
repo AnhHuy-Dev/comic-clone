@@ -2,7 +2,7 @@
 
 import { Comic, Genres } from "@/types";
 import { AiOutlineRight } from "react-icons/ai";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { PiSpinnerBold } from "react-icons/pi";
 import { ClipLoader } from "react-spinners";
 import Footer from "./Footer";
@@ -20,6 +20,7 @@ function SearchContent() {
 	const searchParam = useSearchParams();
 	const title = searchParam.get("title");
 	const pageCurrent = searchParam.get("page") ? searchParam.get("page") : "1";
+	const router = useRouter();
 
 	const { data, isLoading } = useQuery({
 		queryFn: () => getAllSearch(pageCurrent!, title!),
@@ -53,7 +54,7 @@ function SearchContent() {
 					<div className="grid grid-cols-1 md:grid-cols-2 gap-6 py-5">
 						{data.comics.map((item: any, index: number) => {
 							return (
-								<div key={index} className="flex flex-col sm:flex-row gap-4 rounded-lg border border-gray-100 bg-gray-50 p-4 my-2">
+								<div key={index} className="flex flex-col sm:flex-row gap-4 rounded-lg border border-gray-100 bg-gray-50 p-4 my-2" onClick={() => router.push(`/comic/${item.id}`)}>
 									<img src={item?.thumbnail} className="rounded aspect-[2/3] w-44 mx-auto sm:w-auto sm:h-36 border border-emerald-500 object-cover" alt={item?.title} />
 									<div>
 										<h1 className="text-lg text-black leading-5 font-bold">

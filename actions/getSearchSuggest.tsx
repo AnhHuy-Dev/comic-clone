@@ -8,5 +8,5 @@ export const getSearchSuggest = async (value: string): Promise<Comic[]> => {
 		return data;
 	});
 
-	return result;
+	return [];
 };
